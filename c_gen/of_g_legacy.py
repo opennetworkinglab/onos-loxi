@@ -164,6 +164,15 @@ of_mixed_types = dict(
         5: "of_match_v3_t",  # Currently uses same match as 1.2 (v3).
         "short_name":"match"
         },
+    of_calient_port_desc_stats_entry_t = {
+        1: "of_calient_port_desc_stats_entry_t",
+        2: "of_calient_port_desc_stats_entry_t",
+        3: "of_calient_port_desc_stats_entry_t",
+        4: "of_calient_port_desc_stats_entry_t",
+        5: "of_calient_port_desc_stats_entry_t",
+        "short_name":"calient_port_desc_stats_entry"
+        },
+
 )
 
 ## Base data types

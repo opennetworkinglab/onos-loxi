@@ -46,7 +46,7 @@ struct of_calient_port_desc_prop_optical : of_calient_port_desc_prop{
     uint16_t length;    /* Length in bytes of this property. */
     enum ofp_calient_optical_port_admin_state in_admin_status;
     enum ofp_calient_optical_port_oper_state  in_oper_status;
-    enum ofp_calient_optical_port_oper_capability in_oper_capability;
+    enum ofp_calient_optical_port_oper_capability in_oper_capability;/* currently not present in backend */
     enum ofp_calient_optical_port_admin_state out_admin_status;
     enum ofp_calient_optical_port_oper_state  out_oper_status;
     enum ofp_calient_optical_port_oper_capability out_oper_capability;
@@ -89,4 +89,16 @@ struct of_calient_port_desc_stats_reply : of_calient_stats_reply {
     list(of_calient_port_desc_stats_entry_t)port_desc;
 };
 
+
+struct of_calient_port_status : of_experimenter{
+  uint8_t version;
+  uint8_t type == 4;
+  uint16_t length;
+  uint32_t xid;
+  uint32_t experimenter == 0x0080F958;
+  uint32_t subtype == 1;
+  enum ofp_port_reason reason;
+  pad(7);
+  of_calient_port_desc_stats_entry_t desc;
+   };
 

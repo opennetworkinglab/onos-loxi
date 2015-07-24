@@ -15,6 +15,7 @@ struct of_calient_port_stats_request : of_calient_stats_request {
 };
 
 
+/* in_admin_status,in_oper_status,in_oper_capability,in_alarm,in_circuit_id not present in the backkend */
 struct of_calient_port_stats_entry {
     uint16_t length;
     pad(2);
@@ -23,6 +24,7 @@ struct of_calient_port_stats_entry {
     enum ofp_calient_optical_port_oper_state in_oper_status;          /* Input port operational status */
     enum ofp_calient_optical_port_oper_capability in_oper_capability; /* Input port operational capability */
     enum ofp_calient_ocs_alarm in_alarm;/* Alarm on Input port */
+    pad(4);
     of_str6_t inport_power;     /* Input port power */
     pad(2);
     of_str6_t outport_power;    /* Output port power */
@@ -46,8 +48,6 @@ struct of_calient_port_stats_reply : of_calient_stats_reply {
     pad(4);
     uint32_t experimenter == 0x0080F958;
     uint32_t subtype == 3;
-    uint16_t data_length;
-    pad(6);
     list(of_calient_port_stats_entry_t) entries;
 };
 

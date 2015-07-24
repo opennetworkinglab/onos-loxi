@@ -546,6 +546,8 @@ var_string = JType('String').op(
 
 generic_t = JType("T")
 
+calient_port_desc_stats_entry = JType('OFCalientPortDescStatsEntry').op(read='OFCalientPortDescStatsEntryVer$version.READER.readFrom(bb)', write='$name.writeTo(bb)')
+
 table_desc = JType('OFTableDesc') \
         .op(read='OFTableDescVer$version.READER.readFrom(bb)', \
             write='$name.writeTo(bb)')
@@ -580,6 +582,7 @@ default_mtype_to_jtype_convert_map = {
         'of_str64_t': str64,
         'of_str32_t': str32,
         'of_str6_t': str6,
+        'of_calient_port_desc_stats_entry_t': calient_port_desc_stats_entry,
         'of_ipv4_t': ipv4,
         'of_ipv6_t': ipv6,
         'of_wc_bmap_t': flow_wildcards,

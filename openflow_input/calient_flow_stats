@@ -12,7 +12,7 @@ struct of_calient_flow_stats_request : of_calient_stats_request {
     uint32_t subtype == 2;     /* OFPEMPFS = 2 */
     uint8_t table_id;          /* Recommended to be set to 0. Ignored */
     pad(3); 
-    uint32_t out_port;         /* Require matching entries to include this as an output port.
+    of_port_no_t out_port;         /* Require matching entries to include this as an output port.
                                   A value of OFPP_ANY indicates no restriction. Ignored */
     uint32_t out_group;        /* Require matching entries to include this as an output group.
                                   A value of OFPP_ANY indicates no restriction. Ignored */
@@ -40,7 +40,7 @@ enum ofp_calient_cflow_Capability(wire_type=uint8_t, bitmask=True){
     OFPCCS_Failed = 2,      /* Connection has Failed */
     OFPCCS_Initializing = 3,/* Connection making is in progress */
 };
-
+/*oper_capability,alarm,cflow_name not present in the backend */
 struct of_calient_flow_stats_entry {
     uint16_t length;
     uint8_t table_id;        /* Ignored */
@@ -57,6 +57,7 @@ struct of_calient_flow_stats_entry {
     enum ofp_calient_cflow_operational_state oper_status; /* OS = UMA/OOS */
     enum ofp_calient_cflow_Capability  oper_capability;   /* OC = FAIL/OK/INIT */
     enum ofp_calient_ocs_alarm alarm;                     /* Alarm = NA/MJ/MN/CR */
+    of_port_no_t out_port;      
     of_str6_t port_power;
     pad(2);
     of_str6_t connected_port_power;
@@ -76,9 +77,7 @@ struct of_calient_flow_stats_reply : of_calient_stats_reply {
     pad(4);
     uint32_t experimenter == 0x0080F958;
     uint32_t subtype == 2;
-    uint16_t data_length;
-    pad(6);
-    list(of_calient_flow_stats_entry_t)flow_stats;
+    list(of_calient_flow_stats_entry_t)entries;
 };
 
 

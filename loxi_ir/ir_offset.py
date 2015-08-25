@@ -115,6 +115,8 @@ of_base_lengths = dict(
     of_app_code_t = (15,True),
     of_sig_id_t = (6, True),
     of_bitmap_512_t = (64, True),
+    of_odu_sig_id_t = (16, True),
+    of_och_sig_id_t = (6, True),
 )
 
 def type_dec_to_count_base(m_type):

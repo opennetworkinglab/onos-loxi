@@ -1,6 +1,6 @@
 -- binary
 04 0e # version, type
-00 80 # length
+00 B8 # length
 12 34 56 78 # xid
 
 fe dc ba 98 76 54 32 10 # cookie
@@ -21,7 +21,7 @@ ff 00 ff 00 ff 00 ff 00 # cookie_mask
 00 00 # pad
 
 00 01 # match.type
-00 3F # match.length # 59 bytes OXMs + 4 bytes match header
+00 77 # match.length #
 
 80 00 01 08 # match.oxm_list[0].type_len - IN_PORT
 00 00 00 04 # match.oxm_list[0].value
@@ -37,6 +37,31 @@ ff 00 ff 00 ff 00 ff 00 # cookie_mask
 1C CA FE 1C B1 10 1C 00 00 28 00 00 00 00 00 00 # match.oxm_list[3].value
 FF FF FF FF FF F0 FF FF 1C 2C 3C 00 00 00 00 00 # match.oxm_list[3].mask
 
+FF FF # experimenter class
+06 10 # type_len - EXP_ODU_SIG_ID
+FF 00 00 07 # experimenter id
+55 55 # tpn
+00 50 # tslen
+01 01 01 01 01 01 01 01 01 01 00 00 # tsmap
+
+FF FF # experimenter class
+04 01 # type_len - EXP_ODU_SIG_TYPE
+FF 00 00 07 # experimenter id
+08 # value
+
+FF FF # experimenter class
+0A 06 # type_len - EXP_OCH_SIG_ID
+FF 00 00 07 # experimenter id
+02  # gridType
+01  # channelSpacing
+00 04 #  channelNumber
+00 01 #  spectralWidth
+
+FF FF # experimenter class
+08 01 # type_len - EXP_OCH_SIG_TYPE
+FF 00 00 07 # experimenter id
+16 # value
+
 00 # match.pad
 
 00 01 # instructions[0].type
@@ -47,6 +72,7 @@ FF FF FF FF FF F0 FF FF 1C 2C 3C 00 00 00 00 00 # match.oxm_list[3].mask
 00 01 # instructions[1].type
 00 08 # instructions[1].length
 07 # instructions[1].table_id
+
 00 00 00 # pad
 -- python
 ofp.message.flow_delete(
@@ -92,6 +118,10 @@ builder.setXid(0x12345678)
             .setMasked(MatchField.IPV6_SRC, 
                        IPv6Address.of(0x1CCAFE1CB1101C00l, 0x0028000000000000l),
                        IPv6Address.of(0xFFFFFFFFFFF0FFFFl, 0x1C2C3C0000000000l))
+            .setExact(MatchField.EXP_ODU_SIG_ID, new OduSignalID((short)21845, (short)80,new byte[] {1,1,1,1,1,1,1,1,1,1}))
+            .setExact(MatchField.EXP_ODU_SIGTYPE, U8.of((short) 8 ))
+            .setExact(MatchField.EXP_OCH_SIG_ID, new CircuitSignalID((byte)2,(byte)1,(short)4,(short)1))
+            .setExact(MatchField.EXP_OCH_SIGTYPE, U8.of((short) 22))
         	.build()
     )
     .setInstructions(

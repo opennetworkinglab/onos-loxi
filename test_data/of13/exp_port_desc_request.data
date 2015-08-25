@@ -1,0 +1,14 @@
+-- binary
+04 12 # version, type
+00 18 # length
+11 11 11 11 # xid
+ff ff # stats_type
+00 00 # flags
+00 00 00 00 # pad
+FF 00 00 07 # experimenter
+00 00 00 01 # subtype
+
+-- python
+ofp.message.exp_port_desc_request(
+    xid=0x111111)
+

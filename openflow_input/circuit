@@ -19,7 +19,7 @@ enum ofp_channel_spacing {
 };
 
 /* Layer classes (families) supported for optical transport port. */
-enum ofp_port_optical_transport_layer_class {
+enum ofp_port_optical_transport_layer_class(wire_type=uint8_t){
     OFPPOTL_PORT   = 1,           /* Class of base port layer signal types */
     OFPPOTL_OCH    = 2,           /* Class of OCH layer signal types*/
     OFPPOTL_ODU    = 3,           /* Class of ODU layer signal types*/

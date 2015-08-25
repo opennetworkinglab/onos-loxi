@@ -515,7 +515,10 @@ buffer_id = JType("OFBufferId") \
          .op(read="OFBufferId.of(bb.readInt())", write="bb.writeInt($name.getInt())", default="OFBufferId.NO_BUFFER")
 lag_id = JType("LagId") \
          .op(version=ANY, read="LagId.read4Bytes(bb)", write="$name.write4Bytes(bb)", default="LagId.NONE")
-
+odu_sig_id = JType("OduSignalID") \
+        .op(read="OduSignalID.readFrom(bb)", \
+            write="$name.writeTo(bb)",
+            default='OduSignalID.DEFAULT')
 sig_id = JType("CircuitSignalID") \
          .op(version=ANY, read="CircuitSignalID.read6Bytes(bb)", write="$name.write6Bytes(bb)", default="CircuitSignalID.NONE")
 vrf = JType("VRF") \
@@ -595,6 +598,8 @@ default_mtype_to_jtype_convert_map = {
         'of_app_code_t': app_code,  
         'of_sig_id_t': sig_id,
         'of_table_desc_t': table_desc,
+        'of_odu_sig_id_t': odu_sig_id,
+        'of_och_sig_id_t' : sig_id,
         }
 
 ## Map that defines exceptions from the standard loxi->java mapping scheme
@@ -772,6 +777,9 @@ exceptions = {
         'of_oxm_och_sigid_basic' : {'value' : sig_id},  
 
         'of_bundle_add_msg' : { 'data' : of_message },
+
+        'of_oxm_exp_odu_sigtype' : { 'value' : u8obj },
+	'of_oxm_exp_och_sigtype' : { 'value' : u8obj },
 }
 
 

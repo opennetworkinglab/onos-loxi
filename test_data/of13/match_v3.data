@@ -1,6 +1,6 @@
 -- binary
 00 01 # type
-00 3C # length
+00 74 # length
 80 00 # oxm_list[0].class
 05 10 # oxm_list[0].type_len - METADATA
 FE DC BA 98 12 14 12 10 # oxm_list[0].value
@@ -15,6 +15,32 @@ FF FF FF FF 12 34 56 78 # oxm_list[0].mask
 36 10 # oxm_list[4].type_len - IPV6_DST
 12 12 12 12 12 12 12 12 # oxm_list[4].value
 12 12 12 12 12 12 12 12 # ...
+
+FF FF # experimenter class
+06 10 # type_len - EXP_ODU_SIG_ID
+FF 00 00 07 # experimenter id
+55 55 # tpn
+00 50 # tslen
+01 01 01 01 01 01 01 01 01 01 00 00 # tsmap
+
+FF FF # experimenter class
+04 01 # type_len - EXP_ODU_SIG_TYPE
+FF 00 00 07 # experimenter id
+08 # value
+
+FF FF # experimenter class
+0A 06 # type_len - EXP_OCH_SIG_ID
+FF 00 00 07 # experimenter id
+02  # gridType
+01  # channelSpacing
+00 04 #  channelNumber
+00 01 #  spectralWidth
+
+FF FF # experimenter class
+08 01 # type_len - EXP_OCH_SIG_TYPE
+FF 00 00 07 # experimenter id
+16 # value
+
 00 00 00 00 # pad
 -- python
 ofp.match([
@@ -22,6 +48,10 @@ ofp.match([
     ofp.oxm.eth_src([1,2,3,4,5,6]),
     ofp.oxm.udp_dst(53),
     ofp.oxm.ipv6_dst("\x12" * 16),
+    ofp.oxm.exp_odu_sig_id(21845,4,10),
+    ofp.oxm.exp_odu_sigtype(8),
+    ofp.oxm.exp_och_sig_id(2,1,4,1),
+    ofp.oxm.exp_och_sigtype(22)
 ])
 -- java
 builder
@@ -30,4 +60,8 @@ builder
        .setExact(MatchField.UDP_DST, TransportPort.of(53))
        .setExact(MatchField.IPV6_DST, IPv6Address.of(new byte[] { 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 
                                                                   0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12, 0x12 }))
+       .setExact(MatchField.EXP_ODU_SIG_ID, new OduSignalID((short)21845, (short)80,new byte[] {1,1,1,1,1,1,1,1,1,1}))
+       .setExact(MatchField.EXP_ODU_SIGTYPE, U8.of((short) 8 ))
+       .setExact(MatchField.EXP_OCH_SIG_ID, new CircuitSignalID((byte)2,(byte)1,(short)4,(short)1))
+       .setExact(MatchField.EXP_OCH_SIGTYPE, U8.of((short) 22))
                                                            

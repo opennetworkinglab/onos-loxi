@@ -29,6 +29,7 @@ import org.projectfloodlight.openflow.types.UDF;
 import org.projectfloodlight.openflow.types.VRF;
 import org.projectfloodlight.openflow.types.VlanPcp;
 import org.projectfloodlight.openflow.types.CircuitSignalID;
+import org.projectfloodlight.openflow.types.OduSignalID;
 
 @SuppressWarnings("unchecked")
 public class MatchField<F extends OFValueType<F>> {
@@ -288,6 +289,18 @@ public class MatchField<F extends OFValueType<F>> {
 
     public final static MatchField<MacAddress> BSN_INNER_ETH_SRC =
             new MatchField<MacAddress>("bsn_inner_eth_src", MatchFields.BSN_INNER_ETH_SRC);
+
+    public final static MatchField<OduSignalID> EXP_ODU_SIG_ID =
+            new MatchField<OduSignalID>("exp_odu_sig_id", MatchFields.EXP_ODU_SIG_ID);
+    
+    public final static MatchField<U8> EXP_ODU_SIGTYPE =
+            new MatchField<U8>("exp_odu_sigtype", MatchFields.EXP_ODU_SIGTYPE);
+    
+    public final static MatchField<CircuitSignalID> EXP_OCH_SIG_ID =
+            new MatchField<CircuitSignalID>("exp_och_sig_id", MatchFields.EXP_OCH_SIG_ID);
+    
+    public final static MatchField<U8> EXP_OCH_SIGTYPE =
+            new MatchField<U8>("exp_och_sigtype", MatchFields.EXP_OCH_SIGTYPE);
 
     public String getName() {
         return name;

@@ -72,4 +72,8 @@ public enum MatchFields {
     OCH_SIGTYPE_BASIC,
     OCH_SIGID,
     OCH_SIGID_BASIC,
+    EXP_ODU_SIG_ID,
+    EXP_ODU_SIGTYPE,
+    EXP_OCH_SIG_ID,
+    EXP_OCH_SIGTYPE,
 }

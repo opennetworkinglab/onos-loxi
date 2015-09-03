@@ -149,6 +149,13 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <!--
+                            The following configuration turns of DocLint which is enabled in Java 8.
+                            FIXME This can be removed if/when Javadoc comments pass DocLint.
+                          -->
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -172,6 +172,22 @@ of_mixed_types = dict(
         5: "of_calient_port_desc_stats_entry_t",
         "short_name":"calient_port_desc_stats_entry"
         },
+    of_odu_sig_id_t = {
+        1: "of_odu_sig_id_t",
+        2: "of_odu_sig_id_t",
+        3: "of_odu_sig_id_t",
+        4: "of_odu_sig_id_t",
+        5: "of_odu_sig_id_t",
+        "short_name":"odu_sig_id"
+        },
+    of_och_sig_id_t = {
+        1: "of_sig_id_t",
+        2: "of_sig_id_t",
+        3: "of_sig_id_t",
+        4: "of_sig_id_t",
+        5: "of_sig_id_t",
+        "short_name":"sig_id"
+        },
 
 )
 
@@ -232,6 +248,7 @@ of_base_types = dict(
                           short_name="app_code"),
     of_sig_id_t = dict(bytes=ofp_constants["OF_SIGID_LEN"],
                           short_name="sig_id"),
+    of_odu_sig_id_t = dict(bytes=1, short_name="odu_sig_id"),
 )
 
 of_scalar_types = ["char", "uint8_t", "uint16_t", "uint32_t", "uint64_t",

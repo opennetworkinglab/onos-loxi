@@ -777,12 +777,36 @@ exceptions = {
         'of_oxm_och_sigtype' : { 'value' : u8obj },
         'of_oxm_och_sigtype_basic' : { 'value' : u8obj },
         'of_oxm_och_sigid' : {'value' : sig_id},
-        'of_oxm_och_sigid_basic' : {'value' : sig_id},  
+        'of_oxm_och_sigid_basic' : {'value' : sig_id},
 
         'of_bundle_add_msg' : { 'data' : of_message },
 
         'of_oxm_exp_odu_sigtype' : { 'value' : u8obj },
-	'of_oxm_exp_och_sigtype' : { 'value' : u8obj },
+        'of_oxm_exp_och_sigtype' : { 'value' : u8obj },
+
+        'of_oxm_reg0' : { 'value' : u32obj },
+        'of_oxm_reg0_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg1' : { 'value' : u32obj },
+        'of_oxm_reg1_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg2' : { 'value' : u32obj },
+        'of_oxm_reg2_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg3' : { 'value' : u32obj },
+        'of_oxm_reg3_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg4' : { 'value' : u32obj },
+        'of_oxm_reg4_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg5' : { 'value' : u32obj },
+        'of_oxm_reg5_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg6' : { 'value' : u32obj },
+        'of_oxm_reg6_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_reg7' : { 'value' : u32obj },
+        'of_oxm_reg7_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 }
 
 

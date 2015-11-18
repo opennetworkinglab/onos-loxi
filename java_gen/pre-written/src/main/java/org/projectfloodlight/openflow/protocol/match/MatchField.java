@@ -276,7 +276,7 @@ public class MatchField<F extends OFValueType<F>> {
     public final static MatchField<CircuitSignalID> OCH_SIGID_BASIC =
             new MatchField<CircuitSignalID>("och_sigid_basic",
                                     MatchFields.OCH_SIGID);
-    
+
     public final static MatchField<OFBooleanValue> BSN_L2_CACHE_HIT =
             new MatchField<OFBooleanValue>("bsn_l2_cache_hit", MatchFields.BSN_L2_CACHE_HIT);
 
@@ -294,15 +294,39 @@ public class MatchField<F extends OFValueType<F>> {
 
     public final static MatchField<OduSignalID> EXP_ODU_SIG_ID =
             new MatchField<OduSignalID>("exp_odu_sig_id", MatchFields.EXP_ODU_SIG_ID);
-    
+
     public final static MatchField<U8> EXP_ODU_SIGTYPE =
             new MatchField<U8>("exp_odu_sigtype", MatchFields.EXP_ODU_SIGTYPE);
-    
+
     public final static MatchField<CircuitSignalID> EXP_OCH_SIG_ID =
             new MatchField<CircuitSignalID>("exp_och_sig_id", MatchFields.EXP_OCH_SIG_ID);
-    
+
     public final static MatchField<U8> EXP_OCH_SIGTYPE =
             new MatchField<U8>("exp_och_sigtype", MatchFields.EXP_OCH_SIGTYPE);
+
+    public final static MatchField<U32> REG0 =
+            new MatchField<U32>("reg0", MatchFields.REG0);
+
+    public final static MatchField<U32> REG1 =
+            new MatchField<U32>("reg1", MatchFields.REG1);
+
+    public final static MatchField<U32> REG2 =
+            new MatchField<U32>("reg2", MatchFields.REG2);
+
+    public final static MatchField<U32> REG3 =
+            new MatchField<U32>("reg3", MatchFields.REG3);
+
+    public final static MatchField<U32> REG4 =
+            new MatchField<U32>("reg4", MatchFields.REG4);
+
+    public final static MatchField<U32> REG5 =
+            new MatchField<U32>("reg5", MatchFields.REG5);
+
+    public final static MatchField<U32> REG6 =
+            new MatchField<U32>("reg6", MatchFields.REG6);
+
+    public final static MatchField<U32> REG7 =
+            new MatchField<U32>("reg7", MatchFields.REG7);
 
     public String getName() {
         return name;

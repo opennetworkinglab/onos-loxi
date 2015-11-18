@@ -77,4 +77,12 @@ public enum MatchFields {
     EXP_ODU_SIGTYPE,
     EXP_OCH_SIG_ID,
     EXP_OCH_SIGTYPE,
+    REG0,
+    REG1,
+    REG2,
+    REG3,
+    REG4,
+    REG5,
+    REG6,
+    REG7,
 }

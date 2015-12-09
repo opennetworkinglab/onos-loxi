@@ -85,4 +85,10 @@ public enum MatchFields {
     REG5,
     REG6,
     REG7,
+    NSH_SPI,
+    NSH_SI,
+    NSH_CH1,
+    NSH_CH2,
+    NSH_CH3,
+    NSH_CH4,
 }

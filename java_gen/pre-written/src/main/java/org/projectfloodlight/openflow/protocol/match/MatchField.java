@@ -328,6 +328,24 @@ public class MatchField<F extends OFValueType<F>> {
     public final static MatchField<U32> REG7 =
             new MatchField<U32>("reg7", MatchFields.REG7);
 
+    public final static MatchField<U32> NSH_SPI =
+            new MatchField<U32>("set_nsp", MatchFields.NSH_SPI);
+
+    public final static MatchField<U8> NSH_SI =
+            new MatchField<U8>("set_nsi", MatchFields.NSH_SI);
+
+    public final static MatchField<U32> NSH_CH1 =
+            new MatchField<U32>("set_nshc1", MatchFields.NSH_CH1);
+
+    public final static MatchField<U32> NSH_CH2 =
+            new MatchField<U32>("set_nshc2", MatchFields.NSH_CH2);
+
+    public final static MatchField<U32> NSH_CH3 =
+            new MatchField<U32>("set_nshc3", MatchFields.NSH_CH3);
+
+    public final static MatchField<U32> NSH_CH4 =
+            new MatchField<U32>("set_nshc4", MatchFields.NSH_CH4);
+
     public String getName() {
         return name;
     }

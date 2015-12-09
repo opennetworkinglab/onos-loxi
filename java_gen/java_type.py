@@ -807,6 +807,24 @@ exceptions = {
 
         'of_oxm_reg7' : { 'value' : u32obj },
         'of_oxm_reg7_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_nsh_spi' : { 'value' : u32obj },
+        'of_oxm_nsh_spi_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_nsh_si' : { 'value' : u8obj },
+        'of_oxm_nsh_si_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
+
+        'of_oxm_nsh_ch1' : { 'value' : u32obj },
+        'of_oxm_nsh_ch1_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_nsh_ch2' : { 'value' : u32obj },
+        'of_oxm_nsh_ch2_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_nsh_ch3' : { 'value' : u32obj },
+        'of_oxm_nsh_ch3_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+
+        'of_oxm_nsh_ch4' : { 'value' : u32obj },
+        'of_oxm_nsh_ch4_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 }
 
 

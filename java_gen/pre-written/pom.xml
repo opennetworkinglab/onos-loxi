@@ -10,7 +10,7 @@
 
     <groupId>org.onosproject</groupId>
     <artifactId>openflowj</artifactId>
-    <version>0.9.1.onos-SNAPSHOT</version>
+    <version>0.9.1.onos</version>
     <packaging>jar</packaging>
 
     <name>OpenFlowJ-Loxi</name>

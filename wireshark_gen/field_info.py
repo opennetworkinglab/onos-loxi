@@ -54,6 +54,8 @@ oftype_to_wireshark_type = {
     "of_oxm_t": "bytes",
     "of_meter_features_t": "bytes",
     "of_bitmap_128_t": "bytes",
+    "of_bitmap_512_t": "bytes",
+    "of_checksum_128_t": "bytes",
 }
 
 # Map from LOXI type to Wireshark base
@@ -85,6 +87,8 @@ oftype_to_base = {
     "of_oxm_t": "NONE",
     "of_meter_features_t": "NONE",
     "of_bitmap_128_t": "NONE",
+    "of_bitmap_512_t": "NONE",
+    "of_checksum_128_t": "NONE",
 }
 
 # Use enums for certain fields where it isn't specified in the LOXI input

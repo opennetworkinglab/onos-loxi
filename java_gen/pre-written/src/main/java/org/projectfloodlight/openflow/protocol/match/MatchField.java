@@ -277,6 +277,14 @@ public class MatchField<F extends OFValueType<F>> {
             new MatchField<CircuitSignalID>("och_sigid_basic",
                                     MatchFields.OCH_SIGID);
 
+    public final static MatchField<U32> OCH_SIGATT =
+            new MatchField<U32>("och_sigatt",
+                                    MatchFields.OCH_SIGATT);
+
+    public final static MatchField<U32> OCH_SIGATT_BASIC =
+            new MatchField<U32>("och_sigatt_basic",
+                                    MatchFields.OCH_SIGATT_BASIC);
+
     public final static MatchField<OFBooleanValue> BSN_L2_CACHE_HIT =
             new MatchField<OFBooleanValue>("bsn_l2_cache_hit", MatchFields.BSN_L2_CACHE_HIT);
 

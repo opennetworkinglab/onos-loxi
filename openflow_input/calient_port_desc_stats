@@ -20,25 +20,30 @@ struct of_calient_port_desc_prop {
 
 
 enum ofp_calient_optical_port_admin_state(wire_type=uint8_t, bitmask=True){
-    OFPAS_IN_SERVICE = 1,     /*Circuit Port in Service*/
-    OFPAS_OUT_OF_SERVICE = 2, /*Circuit Port out of Service*/
-    OFPAS_OOS_NP = 3          /*Circuit Port out of Service, not provisioned*/
+    OFPAS_IN_SERVICE = 0,     // Enabled to provide service
+    OFPAS_OUT_OF_SERVICE = 1, //Not enabled to provide service
+    OFPAS_OOS_NP = 2,          //Not yet added to system by operator
+    OFPAS_UNDERMANAGEMENT=3, // Configured to provide service, but suspended for maintanance
+    OFPAS_READY=4            // awaiting activation, IS but not monitored
 };
 
 enum ofp_calient_optical_port_oper_state(wire_type=uint8_t, bitmask=True){
-    OFPOS_IN_SERVICE = 8,     /*Circuit Port in Service*/
-    OFPOS_OUT_OF_SERVICE = 16 /*Circuit Port out of Service*/
+    OFPOS_IN_SERVICE = 0,     // Functioning normally & providing service
+    OFPOS_OUT_OF_SERVICE = 1, //Not providing service
+    OFPOS_INITIALIZING = 2, // Initializing
+    OFPOS_READY = 3,        // awaiting activation
+    OFPOS_DEGRADED = 4,        // component failure causing reduced level of support
+    OFPOS_DIAGNOSTICS=5      // performing diagnostics
 };
 
 enum ofp_calient_optical_port_oper_capability(wire_type=uint8_t, bitmask=True){
-    OFPCS_NoHardware = 1,  /* when port is not in connection */
-    OFPCS_Ok = 2,          /* port is in Connection which is made successfully */
-    OFPCS_Failed = 3,      /* when port is in Connection which is Failed */
-    OFPCS_Initializing = 4,/* when port is in Connection which is being made */
+    OFPCS_NoHardware = 0,  /* when port is not in connection */
+    OFPCS_Ok = 1,          /* port is in Connection which is made successfully */
+    OFPCS_Failed = 2,      /* when port is in Connection which is Failed */
+    OFPCS_Initializing = 3,/* when port is in Connection which is being made */
+    OFPCS_Diagnostics=4,     // performing diagnostics
+    OFPCS_Synchronizing=5    // Synchronizing
 };
-
-
-
 
 
 struct of_calient_port_desc_prop_optical : of_calient_port_desc_prop{

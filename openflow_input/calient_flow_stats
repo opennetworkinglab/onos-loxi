@@ -23,23 +23,33 @@ struct of_calient_flow_stats_request : of_calient_stats_request {
 };
 
 enum ofp_calient_cflow_admin_state(wire_type=uint8_t, bitmask=True){
-     OFPCAS_InService = 1,      /* when the connection is activated */
-     OFPCAS_UnderManagement = 2,/*Default Connection state – (when connection is not activated)*/
+     OFPCAS_InService = 0,      // Enabled to provide service
+     OFPCAS_Outofservice = 1,   //Not enabled to provide service
+     OFPCAS_OOS_NP = 2,         //Not yet added to system by operator
+     OFPCAS_UnderManagement = 3,//Configured to provide service, but suspended for maintanance
+     OFPCAS_Ready = 4           // awaiting activation, IS but not monitored
 };
 
-   
+
 enum ofp_calient_cflow_operational_state(wire_type=uint8_t, bitmask=True){
-     OFPCOS_InService = 1,   /* When connection is activated */
-     OFPCOS_OutOfService = 2,/*When connection has a critical alarm  ( activated or otherwise) */
-     OFPCOS_Ready = 3,       /*When AS state is UnderManagement */
-     OFPCOS_Degraded = 4,    /*When connection is activated and has a  Major alarm */
+     OFPCOS_InService = 0,   //Functioning normally & providing service
+     OFPCOS_OutOfService = 1,//Not providing service
+     OFPOS_Initializing = 2, //Initializing
+     OFPCOS_Ready = 3,       //awaiting activation 
+     OFPCOS_Degraded = 4,    //component failure causing reduced level of support
+     OFPCOS_Diagnostics=5    //performing diagnostics
 };
-                              
+
 enum ofp_calient_cflow_Capability(wire_type=uint8_t, bitmask=True){
-    OFPCCS_Ok = 1,          /* Connection has been made successfully */
-    OFPCCS_Failed = 2,      /* Connection has Failed */
-    OFPCCS_Initializing = 3,/* Connection making is in progress */
+    OFPCS_NoHardware = 0,    /* when port is not in connection */
+    OFPCCS_Ok = 1,          /*  port is in Connection which is made successfully */
+    OFPCCS_Failed = 2,      /* when port is in Connection which is Failed */
+    OFPCCS_Initializing = 3,/*  when port is in Connection which is being made */
+    OFPCS_Diagnostics=4,   // performing diagnostics
+    OFPCS_Synchronizing=5   // Synchronizing
 };
+
+
 /*oper_capability,alarm,cflow_name not present in the backend */
 struct of_calient_flow_stats_entry {
     uint16_t length;
@@ -64,6 +74,7 @@ struct of_calient_flow_stats_entry {
     pad(2);
     of_str64_t cflow_name;   /* Connection name */
     of_match_t match;
+     list(of_instruction_t)instructions;
 };
 
 

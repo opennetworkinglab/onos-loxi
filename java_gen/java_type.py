@@ -779,6 +779,9 @@ exceptions = {
         'of_oxm_och_sigid' : {'value' : sig_id},
         'of_oxm_och_sigid_basic' : {'value' : sig_id},
 
+        'of_oxm_och_sigatt' : { 'value' : u32obj },
+        'of_oxm_och_sigatt_basic' : { 'value' : u32obj },
+
         'of_bundle_add_msg' : { 'data' : of_message },
 
         'of_oxm_exp_odu_sigtype' : { 'value' : u8obj },

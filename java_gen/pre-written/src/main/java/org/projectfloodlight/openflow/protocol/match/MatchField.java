@@ -336,23 +336,53 @@ public class MatchField<F extends OFValueType<F>> {
     public final static MatchField<U32> REG7 =
             new MatchField<U32>("reg7", MatchFields.REG7);
 
-    public final static MatchField<U32> NSH_SPI =
-            new MatchField<U32>("set_nsp", MatchFields.NSH_SPI);
+    public final static MatchField<U32> NSP =
+            new MatchField<U32>("nsp", MatchFields.NSP);
 
-    public final static MatchField<U8> NSH_SI =
-            new MatchField<U8>("set_nsi", MatchFields.NSH_SI);
+    public final static MatchField<U8> NSI =
+            new MatchField<U8>("nsi", MatchFields.NSI);
 
-    public final static MatchField<U32> NSH_CH1 =
-            new MatchField<U32>("set_nshc1", MatchFields.NSH_CH1);
+    public final static MatchField<U32> NSH_C1 =
+            new MatchField<U32>("nshc1", MatchFields.NSH_C1);
 
-    public final static MatchField<U32> NSH_CH2 =
-            new MatchField<U32>("set_nshc2", MatchFields.NSH_CH2);
+    public final static MatchField<U32> NSH_C2 =
+            new MatchField<U32>("nshc2", MatchFields.NSH_C2);
 
-    public final static MatchField<U32> NSH_CH3 =
-            new MatchField<U32>("set_nshc3", MatchFields.NSH_CH3);
+    public final static MatchField<U32> NSH_C3 =
+            new MatchField<U32>("nshc3", MatchFields.NSH_C3);
 
-    public final static MatchField<U32> NSH_CH4 =
-            new MatchField<U32>("set_nshc4", MatchFields.NSH_CH4);
+    public final static MatchField<U32> NSH_C4 =
+            new MatchField<U32>("nshc4", MatchFields.NSH_C4);
+
+    public final static MatchField<U8> NSH_MDTYPE =
+            new MatchField<U8>("nsh_mdtype", MatchFields.NSH_MDTYPE);
+
+    public final static MatchField<U8> NSH_NP =
+            new MatchField<U8>("nsh_np", MatchFields.NSH_NP);
+
+    public final static MatchField<MacAddress> ENCAP_ETH_SRC =
+            new MatchField<MacAddress>("encap_eth_src", MatchFields.ENCAP_ETH_SRC);
+
+    public final static MatchField<MacAddress> ENCAP_ETH_DST =
+            new MatchField<MacAddress>("encap_eth_dst", MatchFields.ENCAP_ETH_DST);
+
+    public final static MatchField<U16> ENCAP_ETH_TYPE =
+            new MatchField<U16>("encap_eth_type", MatchFields.ENCAP_ETH_TYPE);
+
+    public final static MatchField<U16> TUN_FLAGS =
+            new MatchField<U16>("tun_flags", MatchFields.TUN_FLAGS);
+
+    public final static MatchField<U16> TUN_GBP_ID =
+            new MatchField<U16>("tun_gbp_id", MatchFields.TUN_GBP_ID);
+
+    public final static MatchField<U8> TUN_GBP_FLAGS =
+            new MatchField<U8>("tun_gbp_flags", MatchFields.TUN_GBP_FLAGS);
+
+    public final static MatchField<U8> TUN_GPE_NP =
+            new MatchField<U8>("tun_gpe_np", MatchFields.TUN_GPE_NP);
+
+    public final static MatchField<U8> TUN_GPE_FLAGS =
+            new MatchField<U8>("tun_gpe_flags", MatchFields.TUN_GPE_NP);
 
     public String getName() {
         return name;

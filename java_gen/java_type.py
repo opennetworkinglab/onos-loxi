@@ -811,23 +811,53 @@ exceptions = {
         'of_oxm_reg7' : { 'value' : u32obj },
         'of_oxm_reg7_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 
-        'of_oxm_nsh_spi' : { 'value' : u32obj },
-        'of_oxm_nsh_spi_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        'of_oxm_nsp' : { 'value' : u32obj },
+        'of_oxm_nsp_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 
-        'of_oxm_nsh_si' : { 'value' : u8obj },
-        'of_oxm_nsh_si_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
+        'of_oxm_nsi' : { 'value' : u8obj },
+        'of_oxm_nsi_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
 
-        'of_oxm_nsh_ch1' : { 'value' : u32obj },
-        'of_oxm_nsh_ch1_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        'of_oxm_nsh_c1' : { 'value' : u32obj },
+        'of_oxm_nsh_c1_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 
-        'of_oxm_nsh_ch2' : { 'value' : u32obj },
-        'of_oxm_nsh_ch2_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        'of_oxm_nsh_c2' : { 'value' : u32obj },
+        'of_oxm_nsh_c2_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 
-        'of_oxm_nsh_ch3' : { 'value' : u32obj },
-        'of_oxm_nsh_ch3_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        'of_oxm_nsh_c3' : { 'value' : u32obj },
+        'of_oxm_nsh_c3_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
 
-        'of_oxm_nsh_ch4' : { 'value' : u32obj },
-        'of_oxm_nsh_ch4_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        'of_oxm_nsh_c4' : { 'value' : u32obj },
+        'of_oxm_nsh_c4_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        
+        'of_oxm_nsh_mdtype' : { 'value' : u8obj },
+        'of_oxm_nsh_mdtype_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
+
+        'of_oxm_nsh_np' : { 'value' : u8obj },
+        'of_oxm_nsh_np_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
+
+        'of_oxm_encap_eth_src' : { 'value' : mac_addr },
+        'of_oxm_encap_eth_src_masked' : { 'value' : mac_addr, 'value_mask' : mac_addr },
+
+        'of_oxm_encap_eth_dst' : { 'value' : mac_addr },
+        'of_oxm_encap_eth_dst_masked' : { 'value' : mac_addr, 'value_mask' : mac_addr },
+
+        'of_oxm_encap_eth_type' : { 'value' : u16obj },
+        'of_oxm_encap_eth_type_masked' : { 'value' : u16obj, 'value_mask' : u16obj },
+
+        'of_oxm_tun_flags' : { 'value' : u16obj },
+        'of_oxm_tun_flags_masked' : { 'value' : u16obj, 'value_mask' : u16obj },
+
+        'of_oxm_tun_gbp_id' : { 'value' : u16obj },
+        'of_oxm_tun_gbp_id_masked' : { 'value' : u16obj, 'value_mask' : u16obj },
+
+        'of_oxm_tun_gbp_flags' : { 'value' : u8obj },
+        'of_oxm_tun_gbp_flags_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
+
+        'of_oxm_tun_gpe_np' : { 'value' : u8obj },
+        'of_oxm_tun_gpe_np_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
+
+        'of_oxm_tun_gpe_flags' : { 'value' : u8obj },
+        'of_oxm_tun_gpe_flags_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
 }
 
 

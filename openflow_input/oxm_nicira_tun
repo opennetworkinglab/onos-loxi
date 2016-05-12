@@ -52,3 +52,64 @@ struct of_oxm_tunnel_ipv4_dst_masked : of_oxm {
     of_ipv4_t value;
     of_ipv4_t value_mask;
 };
+
+// Nicira extension for tun_flags (104)
+struct of_oxm_tun_flags : of_oxm {
+    uint32_t type_len == 0x0001d002;
+    uint16_t value;
+};
+
+struct of_oxm_tun_flags_masked : of_oxm {
+    uint32_t type_len == 0x0001d104;
+    uint16_t value;
+    uint16_t value_mask;
+};
+
+// Nicira extension for tun_gbp_id (38)
+struct of_oxm_tun_gbp_id : of_oxm {
+    uint32_t type_len == 0x00014c02;
+    uint16_t value;
+};
+
+struct of_oxm_tun_gbp_id_masked : of_oxm {
+    uint32_t type_len == 0x00014d04;
+    uint16_t value;
+    uint16_t value_mask;
+};
+
+// Nicira extension for tun_gbp_flags (39)
+struct of_oxm_tun_gbp_flags : of_oxm {
+    uint32_t type_len == 0x00014e01;
+    uint8_t value;
+};
+
+struct of_oxm_tun_gbp_flags_masked : of_oxm {
+    uint32_t type_len == 0x00014f02;
+    uint8_t value;
+    uint8_t value_mask;
+};
+
+// Nicira extension for tun_gpe_np (111)
+struct of_oxm_tun_gpe_np : of_oxm {
+    uint32_t type_len == 0x0001de01;
+    uint8_t value;
+};
+
+struct of_oxm_tun_gpe_np_masked : of_oxm {
+    uint32_t type_len == 0x0001df02;
+    uint8_t value;
+    uint8_t value_mask;
+};
+
+// Nicira extension for tun_gpe_flags (112)
+struct of_oxm_tun_gpe_flags : of_oxm {
+    uint32_t type_len == 0x0001e001;
+    uint8_t value;
+};
+
+struct of_oxm_tun_gpe_flags_masked : of_oxm {
+    uint32_t type_len == 0x0001e102;
+    uint8_t value;
+    uint8_t value_mask;
+};
+

@@ -27,56 +27,20 @@
 
 #version any
 
-struct of_action_nicira_set_nsp : of_action_nicira {
+struct of_action_nicira_push_nsh : of_action_nicira {
     uint16_t type == 65535;
     uint16_t len;
     uint32_t experimenter == 0x2320;
-    uint16_t subtype == 32;
+    uint16_t subtype == 38;
     pad(2);
-    uint32_t nsp;
+    pad(4);
 };
 
-struct of_action_nicira_set_nsi : of_action_nicira {
+struct of_action_nicira_pop_nsh : of_action_nicira {
     uint16_t type == 65535;
     uint16_t len;
     uint32_t experimenter == 0x2320;
-    uint16_t subtype == 33;
-    uint8_t nsi;
-    pad(5);
-};
-
-struct of_action_nicira_set_nshc1 : of_action_nicira {
-    uint16_t type == 65535;
-    uint16_t len;
-    uint32_t experimenter == 0x2320;
-    uint16_t subtype == 34;
+    uint16_t subtype == 39;
     pad(2);
-    uint32_t nshc1;
-};
-
-struct of_action_nicira_set_nshc2 : of_action_nicira {
-    uint16_t type == 65535;
-    uint16_t len;
-    uint32_t experimenter == 0x2320;
-    uint16_t subtype == 35;
-    pad(2);
-    uint32_t nshc2;
-};
-
-struct of_action_nicira_set_nshc3 : of_action_nicira {
-    uint16_t type == 65535;
-    uint16_t len;
-    uint32_t experimenter == 0x2320;
-    uint16_t subtype == 36;
-    pad(2);
-    uint32_t nshc3;
-};
-
-struct of_action_nicira_set_nshc4 : of_action_nicira {
-    uint16_t type == 65535;
-    uint16_t len;
-    uint32_t experimenter == 0x2320;
-    uint16_t subtype == 37;
-    pad(2);
-    uint32_t nshc4;
+    pad(4);
 };

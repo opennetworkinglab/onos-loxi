@@ -29,75 +29,141 @@
 #version 4
 #version 5
 
-// Nicira extension for nsh_spi (37)
-struct of_oxm_nsh_spi : of_oxm {
-    uint32_t type_len == 0x00014a04;
+// Nicira extension for nsp (113)
+struct of_oxm_nsp : of_oxm {
+    uint32_t type_len == 0x0001e204;
     uint32_t value;
 };
 
-struct of_oxm_nsh_spi_masked : of_oxm {
-    uint32_t type_len == 0x00014b08;
+struct of_oxm_nsp_masked : of_oxm {
+    uint32_t type_len == 0x0001e308;
     uint32_t value;
     uint32_t value_mask;
 };
 
-// Nicira extension for nsh_si (38)
-struct of_oxm_nsh_si : of_oxm {
-    uint32_t type_len == 0x00014c04;
+// Nicira extension for nsi (114)
+struct of_oxm_nsi : of_oxm {
+    uint32_t type_len == 0x0001e401;
     uint8_t value;
 };
 
-struct of_oxm_nsh_si_masked : of_oxm {
-    uint32_t type_len == 0x00014d08;
+struct of_oxm_nsi_masked : of_oxm {
+    uint32_t type_len == 0x0001e502;
     uint8_t value;
     uint8_t value_mask;
 };
 
-// Nicira extension for nsh_ch1 (39)
-struct of_oxm_nsh_ch1 : of_oxm {
-    uint32_t type_len == 0x00014e04;
+// Nicira extension for nsh_c1 (115)
+struct of_oxm_nsh_c1 : of_oxm {
+    uint32_t type_len == 0x0001e604;
     uint32_t value;
 };
 
-struct of_oxm_nsh_ch1_masked : of_oxm {
-    uint32_t type_len == 0x00014f08;
+struct of_oxm_nsh_c1_masked : of_oxm {
+    uint32_t type_len == 0x0001e708;
     uint32_t value;
     uint32_t value_mask;
 };
 
-// Nicira extension for nsh_ch2 (40)
-struct of_oxm_nsh_ch2 : of_oxm {
-    uint32_t type_len == 0x00015004;
+// Nicira extension for nsh_c2 (116)
+struct of_oxm_nsh_c2 : of_oxm {
+    uint32_t type_len == 0x0001e804;
     uint32_t value;
 };
 
-struct of_oxm_nsh_ch2_masked : of_oxm {
-    uint32_t type_len == 0x00015108;
+struct of_oxm_nsh_c2_masked : of_oxm {
+    uint32_t type_len == 0x0001e908;
     uint32_t value;
     uint32_t value_mask;
 };
 
 
-// Nicira extension for nsh_ch3 (41)
-struct of_oxm_nsh_ch3 : of_oxm {
-    uint32_t type_len == 0x00015204;
+// Nicira extension for nsh_c3 (117)
+struct of_oxm_nsh_c3 : of_oxm {
+    uint32_t type_len == 0x0001ea04;
     uint32_t value;
 };
 
-struct of_oxm_nsh_ch3_masked : of_oxm {
-    uint32_t type_len == 0x00015308;
+struct of_oxm_nsh_c3_masked : of_oxm {
+    uint32_t type_len == 0x0001eb08;
     uint32_t value;
     uint32_t value_mask;
 };
 
-// Nicira extension for nsh_ch4 (42)
-struct of_oxm_nsh_ch4 : of_oxm {
-    uint32_t type_len == 0x00015404;
+// Nicira extension for nsh_c4 (118)
+struct of_oxm_nsh_c4 : of_oxm {
+    uint32_t type_len == 0x0001ec04;
     uint32_t value;
 };
 
-struct of_oxm_nsh_ch4_masked : of_oxm {
-    uint32_t type_len == 0x00015508;
+struct of_oxm_nsh_c4_masked : of_oxm {
+    uint32_t type_len == 0x0001ed08;
     uint32_t value;
     uint32_t value_mask;
+};
+
+
+// Nicira extension for nsh_mdtype (119)
+struct of_oxm_nsh_mdtype : of_oxm {
+    uint32_t type_len == 0x0001ee01;
+    uint8_t value;
+};
+
+struct of_oxm_nsh_mdtype_masked : of_oxm {
+    uint32_t type_len == 0x0001ef02;
+    uint8_t value;
+    uint8_t value_mask;
+};
+
+
+// Nicira extension for nsh_np (120)
+struct of_oxm_nsh_np : of_oxm {
+    uint32_t type_len == 0x0001f001;
+    uint8_t value;
+};
+
+struct of_oxm_nsh_np_masked : of_oxm {
+    uint32_t type_len == 0x0001f102;
+    uint8_t value;
+    uint8_t value_mask;
+};
+
+
+// Nicira extension for encap_eth_src (121)
+struct of_oxm_encap_eth_src : of_oxm {
+    uint32_t type_len == 0x0001f206;
+    of_mac_addr_t value;
+};
+
+struct of_oxm_encap_eth_src_masked : of_oxm {
+    uint32_t type_len == 0x0001f30c;
+    of_mac_addr_t value;
+    of_mac_addr_t value_mask;
+
+};
+
+
+// Nicira extension for encap_eth_dst (122)
+struct of_oxm_encap_eth_dst : of_oxm {
+    uint32_t type_len == 0x0001f406;
+    of_mac_addr_t value;
+};
+
+struct of_oxm_encap_eth_dst_masked : of_oxm {
+    uint32_t type_len == 0x0001f50c;
+    of_mac_addr_t value;
+    of_mac_addr_t value_mask;
+};
+
+
+// Nicira extension for encap_eth_type (123)
+struct of_oxm_encap_eth_type : of_oxm {
+    uint32_t type_len == 0x0001f602;
+    uint16_t value;
+};
+
+struct of_oxm_encap_eth_type_masked : of_oxm {
+    uint32_t type_len == 0x0001f704;
+    uint16_t value;
+    uint16_t value_mask;
 };

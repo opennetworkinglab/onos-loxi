@@ -456,6 +456,10 @@ port_bitmap_128 = JType('OFBitMask128') \
             .op(read='OFBitMask128.read16Bytes(bb)',
                 write='$name.write16Bytes(bb)',
                 default='OFBitMask128.NONE')
+port_bitmap_256 = JType('OFBitMask256') \
+            .op(read='OFBitMask256.read32Bytes(bb)',
+                write='$name.write32Bytes(bb)',
+                default='OFBitMask256.NONE')
 port_bitmap_512 = JType('OFBitMask512') \
             .op(read='OFBitMask512.read64Bytes(bb)',
                 write='$name.write64Bytes(bb)',
@@ -592,6 +596,7 @@ default_mtype_to_jtype_convert_map = {
         'of_oxm_t': oxm,
         'of_meter_features_t': meter_features,
         'of_bitmap_128_t': port_bitmap_128,
+        'of_bitmap_256_t': port_bitmap_256,
         'of_bitmap_512_t': port_bitmap_512,
         'of_checksum_128_t': u128,
         'of_bsn_vport_t': bsn_vport,
@@ -662,6 +667,9 @@ exceptions = {
 
         'of_oxm_bsn_in_ports_128' : { 'value': port_bitmap_128 },
         'of_oxm_bsn_in_ports_128_masked' : { 'value': port_bitmap_128, 'value_mask': port_bitmap_128 },
+        
+        'of_oxm_bsn_in_ports_256' : { 'value': port_bitmap_256 },
+        'of_oxm_bsn_in_ports_256_masked' : { 'value': port_bitmap_256, 'value_mask': port_bitmap_256 },
 
         'of_oxm_bsn_in_ports_512' : { 'value': port_bitmap_512 },
         'of_oxm_bsn_in_ports_512_masked' : { 'value': port_bitmap_512, 'value_mask': port_bitmap_512 },

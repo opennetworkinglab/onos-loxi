@@ -16,11 +16,13 @@ enum ofp_odu_signal_type (wire_type=uint8_t) {
 
 
 //enum ofp_experimenter_multipart_type_exp (wire_type=uint32_t){
-  //OFPEMPTE = 1,
+  //OFPEMPTE = 1, /*extended port discription */
+  //OFPEMPAD = 2, /*extended port adjacency discovery */
 //};
 
 //enum ofp_port_desc_prop_type_exp (wire_type=uint32_t){
  //OFPPDPT_OPTICAL_TRAMSPORT = 2,
+ //OFPPDPT_ADJACENCY_DISCOVERY = 3,
 //};
 
 /* Supported signal types for layer class OFPPOTL_PORT */
@@ -129,9 +131,33 @@ struct of_oxm_exp_och_sig_id : of_oxm {
      of_och_sig_id_t value;   
 }; 
 
+// Optical transport protocol extensions request & reply head
+struct of_exp_optical_ext_request : of_experimenter_stats_request {
+    uint8_t version;
+    uint8_t type == 18;
+    uint16_t length;
+    uint32_t xid;
+    uint16_t stats_type == 0xffff;
+    enum ofp_stats_request_flags flags;
+    pad(4);
+    uint32_t experimenter == 0xFF000007;
+    uint32_t subtype == ?;
+};
+
+struct of_exp_optical_ext_reply : of_experimenter_stats_reply {
+    uint8_t version;
+    uint8_t type == 19;
+    uint16_t length;
+    uint32_t xid;
+    uint16_t stats_type == 0xffff;
+    enum ofp_stats_reply_flags flags;
+    pad(4);
+    uint32_t experimenter == 0xFF000007;
+    uint32_t subtype == ?;
+};
 
 // open flow extention - support port description Extentions for OTN Ports 
-struct of_exp_port_desc_request : of_experimenter_stats_request {
+struct of_exp_port_desc_request : of_exp_optical_ext_request {
     uint8_t version;
     uint8_t type == 18;
     uint16_t length;
@@ -143,7 +169,7 @@ struct of_exp_port_desc_request : of_experimenter_stats_request {
     uint32_t subtype == 1;//enum ofp_experimenter_multipart_type exp_type == 1;
 };
 
-struct of_exp_port_desc_reply : of_experimenter_stats_reply {
+struct of_exp_port_desc_reply : of_exp_optical_ext_reply {
     uint8_t version;
     uint8_t type == 19;
     uint16_t length;
@@ -207,6 +233,99 @@ struct of_exp_port_optical_transport_layer_entry {
 };
 
 
+// open flow extention - support port adjacency extentions
+/* SubTLVs used for send, expected and received identity strings */
+//enum ofp_exp_ext_port_tlv_types (wire_type=uint8_t) {
+//     OFP_EXP_EXT_PORT_TLV_AD_ID_SENT = 2, //TTI to be send by the port 
+//     OFP_EXP_EXT_PORT_TLV_AD_ID_RECEIVED = 4, //TTI rcvd on port 
+//};
 
+/* used in state field in ofp_port */
+//enum ofp_port_state (wire_type=uint8_t) {
+//     OPPPS_AD_ID_MISMATCH = 1 << 16
+//};
 
+/* used in config field in ofp_port */
+//enum ofp_port_config {
+//    OFPPF_AD_ENABL = 1<< 16,
+//    OFPPF_AIS_AD_ID_MISMATCH = 1 << 17
+//};
 
+struct of_exp_port_adjacency_request : of_exp_optical_ext_request {
+    uint8_t version;
+    uint8_t type == 18;
+    uint16_t length;
+    uint32_t xid;
+    uint16_t stats_type == 0xffff;
+    enum ofp_stats_request_flags flags;
+    pad(4);
+    uint32_t experimenter == 0xFF000007;
+    uint32_t subtype == 2;//enum ofp_experimenter_multipart_type exp_type == 2;
+};
+
+struct of_exp_port_adjacency_reply : of_exp_optical_ext_reply {
+    uint8_t version;
+    uint8_t type == 19;
+    uint16_t length;
+    uint32_t xid;
+    uint16_t stats_type == 0xffff;
+    enum ofp_stats_reply_flags flags;
+    pad(4);
+    uint32_t experimenter == 0xFF000007;
+    uint32_t subtype == 2;//enum ofp_experimenter_multipart_type subtype == 2;
+    list(of_exp_port_adjacency_t) entries;
+};
+
+//Port adjacency discovery property,
+//the body of ofp_experimenter_port in the spec.
+struct of_exp_port_adjacency {
+  of_port_no_t port_no;
+  uint16_t length;
+  pad(2);
+  of_mac_addr_t hw_addr;
+  pad(2);
+  of_port_name_t name;
+  enum ofp_port_config config;
+  enum ofp_port_state state;
+  list(of_exp_port_adjacency_id_t) properties;
+};
+
+//coresponding to ofp_port_desc_prop_adjacency_discovery in the spec
+//with adjecency id definition for otn network
+struct of_exp_port_adjacency_id
+{
+  uint16_t type == 3; //enum ofp_port_desc_prop_type_exp type == 3 
+  uint16_t length; // length in bytes of this property
+  list(of_exp_ext_ad_id_t) ad_id;
+};
+
+struct of_exp_ext_ad_id
+{
+  uint16_t type;//enum ofp_exp_ext_port_tlv_types type;
+  uint16_t length; // The TLV value field length.
+                   //defined as 8 + the length of id[] field
+  uint16_t namespace == 0; // One of OFPHTN*. OFPHTN_ONF = 0
+  uint16_t ns_type == ?; // type witin namespace
+};
+
+struct of_exp_port_adid_otn : of_exp_ext_ad_id
+{
+  uint16_t type; // ofp_exp_ext_port_tlv_types type;
+  uint16_t length; // The TLV value field length.
+                   //defined as 8 + the length of id[] field
+  uint16_t namespace == 0; // One of OFPHTN*. OFPHTN_ONF = 0
+  uint16_t ns_type == 0; // type witin namespace
+  of_bitmap_128_t sapi; //source asccess point identifier, ex.ITUT G.831
+  of_bitmap_128_t dapi; //destination asccess point identifier,ex. ITUT G.831
+  of_bitmap_256_t opspec;//Operator specific value, ex. ITUT G.7714
+};
+
+struct of_exp_ext_adid_sonet : of_exp_ext_ad_id
+{
+  uint16_t type; //enum ofp_exp_ext_port_tlv_types type;
+  uint16_t length; // The TLV value field length.
+                   //defined as 8 + the length of id[] field
+  uint16_t namespace == 0; // One of OFPHTN*. OFPHTN_ONF = 0
+  uint16_t ns_type == 1; // type witin namespace
+  of_bitmap_128_t id;
+};

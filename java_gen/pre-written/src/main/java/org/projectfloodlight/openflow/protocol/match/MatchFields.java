@@ -103,4 +103,5 @@ public enum MatchFields {
     TUN_GBP_FLAGS,
     TUN_GPE_NP,
     TUN_GPE_FLAGS,
+    OFDPA_MPLS_TYPE,
 }

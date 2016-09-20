@@ -384,6 +384,9 @@ public class MatchField<F extends OFValueType<F>> {
     public final static MatchField<U8> TUN_GPE_FLAGS =
             new MatchField<U8>("tun_gpe_flags", MatchFields.TUN_GPE_NP);
 
+    public final static MatchField<U16> OFDPA_MPLS_TYPE =
+            new MatchField<U16>("ofdpa_mpls_type", MatchFields.OFDPA_MPLS_TYPE);
+
     public String getName() {
         return name;
     }

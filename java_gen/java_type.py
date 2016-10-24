@@ -667,7 +667,7 @@ exceptions = {
 
         'of_oxm_bsn_in_ports_128' : { 'value': port_bitmap_128 },
         'of_oxm_bsn_in_ports_128_masked' : { 'value': port_bitmap_128, 'value_mask': port_bitmap_128 },
-        
+
         'of_oxm_bsn_in_ports_256' : { 'value': port_bitmap_256 },
         'of_oxm_bsn_in_ports_256_masked' : { 'value': port_bitmap_256, 'value_mask': port_bitmap_256 },
 
@@ -836,7 +836,7 @@ exceptions = {
 
         'of_oxm_nsh_c4' : { 'value' : u32obj },
         'of_oxm_nsh_c4_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
-        
+
         'of_oxm_nsh_mdtype' : { 'value' : u8obj },
         'of_oxm_nsh_mdtype_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
 
@@ -868,6 +868,13 @@ exceptions = {
         'of_oxm_tun_gpe_flags_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
 
         'of_oxm_ofdpa_mpls_type': { 'value': u16obj },
+
+        'of_oxm_ofdpa_qos_index': { 'value': u8obj },
+
+        'of_oxm_ofdpa_mpls_l2_port': { 'value': u32obj },
+        'of_oxm_ofdpa_mpls_l2_port_masked': { 'value': u32obj, 'value_mask': u32obj },
+
+        'of_oxm_ofdpa_ovid': { 'value': u16obj },
 }
 
 

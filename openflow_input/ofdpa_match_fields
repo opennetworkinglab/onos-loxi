@@ -1,0 +1,40 @@
+#version 4
+
+// Here we define the experimental match fields supported by OFDPA pipeline
+
+// This struct defines QoS
+struct of_oxm_ofdpa_qos_index : of_oxm {
+    uint32_t type_len == 0xFFFF0A05;
+    uint32_t experimenter_id == 0x1018;
+    uint8_t value;
+};
+
+// This struct defines MPLS_TYPE
+struct of_oxm_ofdpa_mpls_type : of_oxm {
+    uint32_t type_len == 0xFFFF2E06;
+    uint32_t experimenter_id == 0x1018;
+    uint16_t value;
+};
+
+// This struct defines MPLS_L2_PORT
+struct of_oxm_ofdpa_mpls_l2_port : of_oxm {
+    uint32_t type_len == 0xFFFF1008;
+    uint32_t experimenter_id == 0x1018;
+    uint32_t value;
+};
+
+// This struct defines the masked version of MPLS_L2_PORT
+struct of_oxm_ofdpa_mpls_l2_port_masked : of_oxm {
+    uint32_t type_len == 0xFFFF110C;
+    uint32_t experimenter_id == 0x1018;
+    uint32_t value;
+    uint32_t value_mask;
+};
+
+// This struct defines the OVID
+struct of_oxm_ofdpa_ovid : of_oxm {
+    uint32_t type_len == 0xFFFF1406;
+    uint32_t experimenter_id == 0x1018;
+    uint16_t value;
+};
+

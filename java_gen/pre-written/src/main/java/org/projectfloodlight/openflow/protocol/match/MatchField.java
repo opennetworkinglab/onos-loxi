@@ -387,6 +387,16 @@ public class MatchField<F extends OFValueType<F>> {
     public final static MatchField<U16> OFDPA_MPLS_TYPE =
             new MatchField<U16>("ofdpa_mpls_type", MatchFields.OFDPA_MPLS_TYPE);
 
+    public final static MatchField<U8> OFDPA_QOS_INDEX =
+            new MatchField<U8>("ofdpa_qos_index", MatchFields.OFDPA_QOS_INDEX);
+
+    public final static MatchField<U32> OFDPA_MPLS_L2_PORT =
+            new MatchField<U32>("ofdpa_mpls_l2_port", MatchFields.OFDPA_MPLS_L2_PORT);
+
+    public final static MatchField<U16> OFDPA_OVID =
+            new MatchField<U16>("ofdpa_ovid", MatchFields.OFDPA_OVID,
+                new Prerequisite<OFVlanVidMatch>(MatchField.VLAN_VID));
+
     public String getName() {
         return name;
     }

@@ -1,0 +1,42 @@
+#version 4
+
+// Here we define the experimental actions supported by OFDPA pipeline
+
+// Push l2 header action. This action push an other ethernet
+// header on top of the previous one.
+struct of_action_ofdpa_push_l2_header : of_action_ofdpa {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x1018;
+    uint16_t exp_type == 1;
+    pad(6);
+};
+
+// Pop l2 header action. This action pop the outer ethernet
+// header.
+struct of_action_ofdpa_pop_l2_header : of_action_ofdpa {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x1018;
+    uint16_t exp_type == 2;
+    pad(6);
+};
+
+// Push MPLS-TP PW Control Word. The Control Word is initialized to zero.
+struct of_action_ofdpa_push_cw : of_action_ofdpa {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x1018;
+    uint16_t exp_type == 3;
+    pad(6);
+};
+
+// Pop MPLS-TP PW Control Word or Associated Channel Header.
+// Used in MPLS bottom of stack label match actions.
+struct of_action_ofdpa_pop_cw : of_action_ofdpa {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x1018;
+    uint16_t exp_type == 4;
+    pad(6);
+};

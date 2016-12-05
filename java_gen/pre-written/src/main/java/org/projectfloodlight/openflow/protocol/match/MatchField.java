@@ -21,6 +21,7 @@ import org.projectfloodlight.openflow.types.OFPort;
 import org.projectfloodlight.openflow.types.OFValueType;
 import org.projectfloodlight.openflow.types.OFVlanVidMatch;
 import org.projectfloodlight.openflow.types.TransportPort;
+import org.projectfloodlight.openflow.types.PacketType;
 import org.projectfloodlight.openflow.types.U16;
 import org.projectfloodlight.openflow.types.U32;
 import org.projectfloodlight.openflow.types.U64;
@@ -30,16 +31,22 @@ import org.projectfloodlight.openflow.types.VRF;
 import org.projectfloodlight.openflow.types.VlanPcp;
 import org.projectfloodlight.openflow.types.CircuitSignalID;
 import org.projectfloodlight.openflow.types.OduSignalID;
+import org.projectfloodlight.openflow.types.VxlanNI;
+import org.projectfloodlight.openflow.types.VFI;
+
+import java.util.Set;
+import com.google.common.collect.ImmutableSet;
 
 public class MatchField<F extends OFValueType<F>> {
     private final String name;
     public final MatchFields id;
-    private final Prerequisite<?>[] prerequisites;
+    private final Set<Prerequisite<?>> prerequisites;
 
     private MatchField(final String name, final MatchFields id, Prerequisite<?>... prerequisites) {
         this.name = name;
         this.id = id;
-        this.prerequisites = prerequisites;
+        /* guaranteed non-null (private constructor); 'null' isn't passed as prerequisites */
+        this.prerequisites = ImmutableSet.copyOf(prerequisites);
     }
 
     public final static MatchField<OFPort> IN_PORT =
@@ -197,10 +204,26 @@ public class MatchField<F extends OFValueType<F>> {
             new MatchField<U64>("tunnel_id", MatchFields.TUNNEL_ID);
 
     public final static MatchField<U16> IPV6_EXTHDR =
-            new MatchField<U16>("ipv6_exthdr", MatchFields.IPV6_EXTHDR);
+            new MatchField<U16>("ipv6_exthdr", MatchFields.IPV6_EXTHDR,
+                    new Prerequisite<EthType>(MatchField.ETH_TYPE, EthType.IPv6));
 
     public final static MatchField<OFBooleanValue> PBB_UCA =
-            new MatchField<OFBooleanValue>("pbb_uca", MatchFields.PBB_UCA);
+            new MatchField<OFBooleanValue>("pbb_uca", MatchFields.PBB_UCA,
+                    new Prerequisite<EthType>(MatchField.ETH_TYPE, EthType.PBB));
+
+    public final static MatchField<U16> TCP_FLAGS =
+            new MatchField<U16>("tcp_flags", MatchFields.TCP_FLAGS,
+                    new Prerequisite<IpProtocol>(MatchField.IP_PROTO, IpProtocol.TCP));
+
+    public final static MatchField<U16> OVS_TCP_FLAGS =
+            new MatchField<U16>("ovs_tcp_flags", MatchFields.OVS_TCP_FLAGS,
+                    new Prerequisite<IpProtocol>(MatchField.IP_PROTO, IpProtocol.TCP));
+
+    public final static MatchField<PacketType> PACKET_TYPE =
+            new MatchField<PacketType>("packet_type", MatchFields.PACKET_TYPE);
+
+    public final static MatchField<OFPort> ACTSET_OUTPUT =
+            new MatchField<OFPort>("actset_output", MatchFields.ACTSET_OUTPUT);
 
     public final static MatchField<IPv4Address> TUNNEL_IPV4_SRC =
             new MatchField<IPv4Address>("tunnel_ipv4_src", MatchFields.TUNNEL_IPV4_SRC,
@@ -297,8 +320,8 @@ public class MatchField<F extends OFValueType<F>> {
     public final static MatchField<OFBooleanValue> BSN_L2_CACHE_HIT =
             new MatchField<OFBooleanValue>("bsn_l2_cache_hit", MatchFields.BSN_L2_CACHE_HIT);
 
-    public final static MatchField<U32> BSN_VXLAN_NETWORK_ID =
-            new MatchField<U32>("bsn_vxlan_network_id", MatchFields.BSN_VXLAN_NETWORK_ID);
+    public final static MatchField<VxlanNI> BSN_VXLAN_NETWORK_ID =
+            new MatchField<VxlanNI>("bsn_vxlan_network_id", MatchFields.BSN_VXLAN_NETWORK_ID);
 
     public final static MatchField<MacAddress> BSN_INNER_ETH_DST =
             new MatchField<MacAddress>("bsn_inner_eth_dst", MatchFields.BSN_INNER_ETH_DST);
@@ -406,6 +429,13 @@ public class MatchField<F extends OFValueType<F>> {
             new MatchField<U16>("ofdpa_ovid", MatchFields.OFDPA_OVID,
                 new Prerequisite<OFVlanVidMatch>(MatchField.VLAN_VID));
 
+    public final static MatchField<VFI> BSN_VFI =
+            new MatchField<VFI>("bsn_vfi", MatchFields.BSN_VFI);
+
+    public final static MatchField<OFBooleanValue> BSN_IP_FRAGMENTATION =
+            new MatchField<OFBooleanValue>("bsn_ip_fragmentation", MatchFields.BSN_IP_FRAGMENTATION,
+                    new Prerequisite<EthType>(MatchField.ETH_TYPE, EthType.IPv4, EthType.IPv6));
+
     public String getName() {
         return name;
     }
@@ -417,6 +447,17 @@ public class MatchField<F extends OFValueType<F>> {
             }
         }
         return true;
+    }
+
+    /**
+     * Retrieve what also must be matched in order to
+     * use this particular MatchField.
+     *
+     * @return unmodifiable view of the prerequisites
+     */
+    public Set<Prerequisite<?>> getPrerequisites() {
+        /* assumes non-null; guaranteed by constructor */
+        return this.prerequisites;
     }
 
 }

@@ -1,4 +1,4 @@
-// Copyright 2015, Big Switch Networks, Inc.
+// Copyright 2015-2016, Big Switch Networks, Inc.
 //
 // LoxiGen is licensed under the Eclipse Public License, version 1.0 (EPL), with
 // the following special exception:
@@ -26,8 +26,16 @@
 // under the EPL.
 
 #version 5
+#version 6
 
 struct of_port_desc_prop_bsn : of_port_desc_prop_experimenter {
+    uint16_t type == 0xffff;
+    uint16_t length;
+    uint32_t experimenter == 0x5c16c7;
+    uint32_t exp_type == ?;
+};
+
+struct of_queue_desc_prop_bsn : of_queue_desc_prop_experimenter {
     uint16_t type == 0xffff;
     uint16_t length;
     uint32_t experimenter == 0x5c16c7;

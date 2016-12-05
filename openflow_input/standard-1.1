@@ -555,8 +555,8 @@ struct of_port_mod : of_header {
     pad(4);
     of_mac_addr_t hw_addr;
     pad(2);
-    uint32_t config;
-    uint32_t mask;
+    enum ofp_port_config config;
+    enum ofp_port_config mask;
     uint32_t advertise;
     pad(4);
 };
@@ -761,7 +761,7 @@ struct of_packet_out : of_header {
     uint32_t xid;
     uint32_t buffer_id;
     of_port_no_t in_port;
-    uint16_t actions_len;
+    uint16_t actions_len == length(actions);
     pad(6);
     list(of_action_t) actions;
     of_octets_t data;
@@ -1033,7 +1033,7 @@ struct of_flow_removed : of_header {
     uint32_t xid;
     uint64_t cookie;
     uint16_t priority;
-    uint8_t reason;
+    enum ofp_flow_removed_reason reason;
     uint8_t table_id;
     uint32_t duration_sec;
     uint32_t duration_nsec;

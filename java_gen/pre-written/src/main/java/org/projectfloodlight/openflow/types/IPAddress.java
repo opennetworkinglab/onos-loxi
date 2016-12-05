@@ -34,12 +34,48 @@ public abstract class IPAddress<F extends IPAddress<F>> implements OFValueType<F
     public abstract int asCidrMaskLength();
 
     /**
+     * Returns {@code true} if the IPAddress is unspecified.
+     *
+     * <p>The <em>unspecified</em> addresses, also known as the
+     * <em>wildcard</em> addresses, refer to:
+     * <ul>
+     * <li>the {@link IPv4Address} of {@code 0.0.0.0}
+     * <li>the {@link IPv6Address} of {@code ::}
+     * </ul>
+     * @return {@code true} if the IPAddress is unspecified, false otherwise
+     */
+    public abstract boolean isUnspecified();
+
+    /**
+     * Returns {@code true} if the IPAddress is a loopback address.
+     *
+     * <p><em>Loopback</em> addresses refer to:
+     * <ul>
+     * <li>any {@link IPv4Address} within {@code 127.0.0.0/8}
+     * <li>the {@link IPv6Address} of {@code ::1}
+     * </ul>
+     * @return {@code true} if the IPAddress is a loopback address, false otherwise
+     */
+    public abstract boolean isLoopback();
+
+    /**
+     * Returns {@code true} if the IPAddress is a link local address.
+     *
+     * <p><em>Link local</em> addresses refer to:
+     * <ul>
+     * <li>any {@link IPv4Address} within {@code 169.254.0.0/16}
+     * <li>any {@link IPv6Address} within {@code fe80::/10}
+     * </ul>
+     * @return {@code true} if the IPAddress is a link local address, false otherwise
+     */
+    public abstract boolean isLinkLocal();
+
+    /**
      * Checks if the IPAddress is the global broadcast address
      * 255.255.255.255 in case of IPv4
      * @return boolean true or false
      */
     public abstract boolean isBroadcast();
-
 
     /**
      * Checks if the IPAddress is the multicast address
@@ -110,6 +146,20 @@ public abstract class IPAddress<F extends IPAddress<F>> implements OFValueType<F
      * @see InetAddress#getAddress()
      */
     public abstract byte[] getBytes();
+
+    /**
+     * Returns an {@link InetAddress} object representing this IP address.
+     *
+     * <p>The resulting {@link InetAddress} object:
+     * <ul>
+     * <li>will not carry a hostname
+     * <li>will not carry a non-zero scope ID or scoped interface,
+     *     in the case of {@link Inet6Address}
+     * </ul>
+     * @return an {@link InetAddress} object representing this IP address
+     */
+    @Nonnull
+    public abstract InetAddress toInetAddress();
 
     @Override
     public abstract String toString();

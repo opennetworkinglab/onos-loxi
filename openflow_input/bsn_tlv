@@ -1,4 +1,4 @@
-// Copyright 2013, Big Switch Networks, Inc.
+// Copyright 2013-2017, Big Switch Networks, Inc.
 //
 // LoxiGen is licensed under the Eclipse Public License,
 // version 1.0 (EPL), with the following special exception:
@@ -30,6 +30,7 @@
 
 #version 4
 #version 5
+#version 6
 
 struct of_bsn_tlv_port : of_bsn_tlv {
     uint16_t type == 0;
@@ -550,5 +551,528 @@ struct of_bsn_tlv_negate : of_bsn_tlv {
 struct of_bsn_tlv_ipv6 : of_bsn_tlv {
     uint16_t type == 84;
     uint16_t length;
-    of_ipv6_t value; 
+    of_ipv6_t value;
+};
+
+enum ofp_bsn_decap(wire_type=uint16_t) {
+    OFP_BSN_DECAP_VXLAN = 0,
+    OFP_BSN_DECAP_ERSPAN = 1,
+    OFP_BSN_DECAP_L2_GRE = 2,
+    OFP_BSN_DECAP_NVGRE = 3,
+    OFP_BSN_DECAP_CAPWAP = 4,
+    OFP_BSN_DECAP_L2_MPLS = 5,
+    OFP_BSN_DECAP_L3_GRE = 6,
+    OFP_BSN_DECAP_GTP = 7,
+    OFP_BSN_DECAP_L3_MPLS = 8,
+};
+
+struct of_bsn_tlv_decap : of_bsn_tlv {
+    uint16_t type == 85;
+    uint16_t length;
+    enum ofp_bsn_decap value;
+};
+
+struct of_bsn_tlv_vni : of_bsn_tlv {
+    uint16_t type == 86;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_mcg_type_vxlan : of_bsn_tlv {
+    uint16_t type == 87;
+    uint16_t length;
+};
+
+enum ofp_bsn_port_vxlan_mode(wire_type=uint8_t) {
+    OFP_BSN_PORT_VXLAN_RECIRCULATION_ENABLE = 0,
+    OFP_BSN_PORT_VXLAN_TERMINATION_ENABLE = 1,
+};
+
+struct of_bsn_tlv_port_vxlan_mode : of_bsn_tlv {
+    uint16_t type == 88;
+    uint16_t length;
+    enum ofp_bsn_port_vxlan_mode value;
+};
+
+enum ofp_bsn_rate_unit(wire_type=uint8_t) {
+    OFP_BSN_RATE_UNIT_PPS = 0, /* Packets per second */
+    OFP_BSN_RATE_UNIT_KBITPS = 1, /* Kilobits per second */
+};
+
+struct of_bsn_tlv_rate_unit : of_bsn_tlv {
+    uint16_t type == 89;
+    uint16_t length;
+    enum ofp_bsn_rate_unit value;
+};
+
+struct of_bsn_tlv_broadcast_rate : of_bsn_tlv {
+    uint16_t type == 90;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_known_multicast_rate : of_bsn_tlv {
+    uint16_t type == 91;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_unknown_multicast_rate : of_bsn_tlv {
+    uint16_t type == 92;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_unicast_rate : of_bsn_tlv {
+    uint16_t type == 93;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_nexthop_type_vxlan : of_bsn_tlv {
+    uint16_t type == 94;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_multicast_interface_id : of_bsn_tlv {
+    uint16_t type == 95;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_use_packet_state : of_bsn_tlv {
+    uint16_t type == 96;
+    uint16_t length;
+    uint8_t value;
+};
+
+enum ofp_bsn_status(wire_type=uint8_t) {
+    OFP_BSN_STATUS_DISABLE = 0,
+    OFP_BSN_STATUS_ENABLE = 1,
+};
+
+struct of_bsn_tlv_status: of_bsn_tlv {
+    uint16_t type == 97;
+    uint16_t length;
+    enum ofp_bsn_status value;
+};
+
+struct of_bsn_vlan_mac {
+    uint16_t vlan_vid;
+    of_mac_addr_t mac;
+};
+
+struct of_bsn_tlv_vlan_mac_list : of_bsn_tlv {
+    uint16_t type == 98;
+    uint16_t length;
+    list(of_bsn_vlan_mac_t) key;
+};
+
+struct of_bsn_tlv_vfi : of_bsn_tlv {
+    uint16_t type == 99;
+    uint16_t length;
+    uint16_t value;
+};
+
+struct of_bsn_tlv_hash_seed : of_bsn_tlv {
+    uint16_t type == 100;
+    uint16_t length;
+    uint32_t seed1;
+    uint32_t seed2;
+};
+
+enum of_bsn_hash_type(wire_type=uint8_t) {
+    OFP_BSN_HASH_TYPE_L2 = 0,
+    OFP_BSN_HASH_TYPE_L3 = 1,
+    OFP_BSN_HASH_TYPE_ENHANCED = 2,
+};
+
+struct of_bsn_tlv_hash_type : of_bsn_tlv {
+    uint16_t type == 101;
+    uint16_t length;
+    enum of_bsn_hash_type value;
+};
+
+enum of_bsn_hash_packet_type(wire_type=uint8_t) {
+    OF_BSN_HASH_PACKET_L2 = 0,
+    OF_BSN_HASH_PACKET_L2GRE = 1,
+    OF_BSN_HASH_PACKET_IPV4 = 3,
+    OF_BSN_HASH_PACKET_IPV6 = 4,
+    OF_BSN_HASH_PACKET_MPLS = 5,
+    OF_BSN_HASH_PACKET_SYMMETRIC = 6,
+};
+
+struct of_bsn_tlv_hash_packet_type : of_bsn_tlv {
+    uint16_t type == 102;
+    uint16_t length;
+    enum of_bsn_hash_packet_type value;
+};
+
+enum of_bsn_hash_packet_field(wire_type=uint64_t, bitmask=True) {
+    // 0x1 is unused
+    OFP_BSN_HASH_FIELD_DST_MAC =     0x2,
+    OFP_BSN_HASH_FIELD_SRC_MAC =     0x4,
+    OFP_BSN_HASH_FIELD_ETH_TYPE =    0x8,
+    OFP_BSN_HASH_FIELD_VLAN_ID =     0x10,
+    OFP_BSN_HASH_FIELD_INNER_L2 =    0x20,
+    OFP_BSN_HASH_FIELD_INNER_L3 =    0x40,
+    OFP_BSN_HASH_FIELD_SRC_IP =      0x80,
+    OFP_BSN_HASH_FIELD_DST_IP =      0x100,
+    OFP_BSN_HASH_FIELD_IP_PROTO =    0x200,
+    OFP_BSN_HASH_FIELD_SRC_L4_PORT = 0x400,
+    OFP_BSN_HASH_FIELD_DST_L4_PORT = 0x800,
+    OFP_BSN_HASH_FIELD_MPLS_LABEL1 = 0x1000,
+    OFP_BSN_HASH_FIELD_MPLS_LABEL2 = 0x2000,
+    OFP_BSN_HASH_FIELD_MPLS_LABEL3 = 0x4000,
+    OFP_BSN_HASH_FIELD_MPLS_LABEL_HI_BITS  = 0x8000,
+    OFP_BSN_HASH_FIELD_MPLS_PAYLOAD_SRC_IP = 0x10000,
+    OFP_BSN_HASH_FIELD_MPLS_PAYLOAD_DST_IP = 0x20000,
+    OFP_BSN_HASH_FIELD_SYMMETRIC =           0x40000,
+};
+
+struct of_bsn_tlv_hash_packet_field : of_bsn_tlv {
+    uint16_t type == 103;
+    uint16_t length;
+    enum of_bsn_hash_packet_field value;
+};
+
+struct of_bsn_tlv_hash_gtp_header_match : of_bsn_tlv {
+    uint16_t type == 104;
+    uint16_t length;
+    uint8_t first_header_byte;
+    uint8_t first_header_mask;
+};
+
+enum of_bsn_hash_gtp_port_match(wire_type=uint8_t) {
+    OF_BSN_HASH_GTP_PORT_MATCH_SRC = 1,
+    OF_BSN_HASH_GTP_PORT_MATCH_DST = 2,
+    OF_BSN_HASH_GTP_PORT_MATCH_SRC_OR_DST = 3,
+    OF_BSN_HASH_GTP_PORT_MATCH_SRC_AND_DST = 4,
+};
+
+struct of_bsn_tlv_hash_gtp_port_match : of_bsn_tlv {
+    uint16_t type == 105;
+    uint16_t length;
+    enum of_bsn_hash_gtp_port_match match;
+    uint16_t src_port;
+    uint16_t dst_port;
+};
+
+struct of_bsn_tlv_untagged : of_bsn_tlv {
+    uint16_t type == 106;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_vfp_class_id : of_bsn_tlv {
+    uint16_t type == 107;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_qos_priority : of_bsn_tlv {
+    uint16_t type == 108;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_parent_port : of_bsn_tlv {
+    uint16_t type == 109;
+    uint16_t length;
+    of_port_no_t value;
+};
+
+struct of_bsn_tlv_loopback_port : of_bsn_tlv {
+    uint16_t type == 110;
+    uint16_t length;
+    of_port_no_t value;
+};
+
+struct of_bsn_tlv_vpn_key : of_bsn_tlv {
+    uint16_t type == 111;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_dscp : of_bsn_tlv {
+    uint16_t type == 112;
+    uint16_t length;
+    uint16_t value;  // 0-63
+};
+
+struct of_bsn_tlv_ttl : of_bsn_tlv {
+    uint16_t type == 113;
+    uint16_t length;
+    uint16_t value;
+};
+
+struct of_bsn_tlv_next_hop_mac : of_bsn_tlv {
+    uint16_t type == 114;
+    uint16_t length;
+    of_mac_addr_t value;
+};
+
+struct of_bsn_tlv_next_hop_ipv4 : of_bsn_tlv {
+    uint16_t type == 115;
+    uint16_t length;
+    of_ipv4_t value;
+};
+
+struct of_bsn_tlv_rate_limit : of_bsn_tlv {
+    uint16_t type == 116;
+    uint16_t length;
+    uint32_t value;  // in Kbps
+};
+
+struct of_bsn_tlv_vxlan_egress_lag : of_bsn_tlv {
+    uint16_t type == 117;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_cpu_lag : of_bsn_tlv {
+    uint16_t type == 118;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_uint64_list : of_bsn_tlv {
+    uint16_t type == 119;
+    uint16_t length;
+    list(of_uint64_t) value;
+};
+
+struct of_bsn_tlv_disable_src_mac_check : of_bsn_tlv {
+    uint16_t type == 120;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_drop : of_bsn_tlv {
+    uint16_t type == 121;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_ipv6_prefix : of_bsn_tlv {
+    uint16_t type == 122;
+    uint16_t length;
+    of_ipv6_t value;
+    uint8_t prefix_length;
+};
+
+struct of_bsn_tlv_ndp_offload : of_bsn_tlv {
+    uint16_t type == 123;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_ndp_static : of_bsn_tlv {
+    uint16_t type == 124;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_icmpv6_chksum : of_bsn_tlv {
+    uint16_t type == 125;
+    uint16_t length;
+    uint16_t value;
+};
+
+struct of_bsn_tlv_ipv6_src : of_bsn_tlv {
+    uint16_t type == 126;
+    uint16_t length;
+    of_ipv6_t value;
+};
+
+struct of_bsn_tlv_ipv6_dst : of_bsn_tlv {
+    uint16_t type == 127;
+    uint16_t length;
+    of_ipv6_t value;
+};
+
+struct of_bsn_tlv_push_vlan_on_ingress : of_bsn_tlv {
+    uint16_t type == 128;
+    uint16_t length;
+};
+
+// apply_packets and apply_bytes are stat counters, like rx_packet
+// identifies packets and bytes applied to some action, for example:
+// packets with inet L3/L4 headers for netflow
+
+struct of_bsn_tlv_apply_packets : of_bsn_tlv {
+    uint16_t type == 129;
+    uint16_t length;
+    uint64_t value;
+};
+
+struct of_bsn_tlv_apply_bytes : of_bsn_tlv {
+    uint16_t type == 130;
+    uint16_t length;
+    uint64_t value;
+};
+
+struct of_bsn_tlv_eth_type : of_bsn_tlv {
+    uint16_t type == 131;
+    uint16_t length;
+    uint16_t value;
+};
+
+struct of_bsn_tlv_ecn : of_bsn_tlv {
+    uint16_t type == 132;
+    uint16_t length;
+    uint8_t value;
+};
+
+struct of_bsn_tlv_tcp_flags : of_bsn_tlv {
+    uint16_t type == 133;
+    uint16_t length;
+    uint16_t value;
+};
+
+struct of_bsn_tlv_l3_interface_class_id : of_bsn_tlv {
+    uint16_t type == 134;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_l3_src_class_id : of_bsn_tlv {
+    uint16_t type == 135;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_l3_dst_class_id : of_bsn_tlv {
+    uint16_t type == 136;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_egress_only : of_bsn_tlv {
+    uint16_t type == 137;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_ingress_port_group_id : of_bsn_tlv {
+    uint16_t type == 138;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_egress_port_group_id : of_bsn_tlv {
+    uint16_t type == 139;
+    uint16_t length;
+    uint32_t value;
+};
+
+struct of_bsn_tlv_data_mask : of_bsn_tlv {
+    uint16_t type == 140;
+    uint16_t length;
+    of_octets_t value;
+};
+
+enum ofp_bsn_port_usage(wire_type=uint16_t) {
+    OFP_BSN_PORT_UNUSED = 0,
+    OFP_BSN_PORT_TRANSMIT_ONLY = 1,
+    OFP_BSN_PORT_RECEIVE_ONLY = 2,
+    OFP_BSN_PORT_BIDIRECTION = 3,
+};
+
+struct of_bsn_tlv_port_usage : of_bsn_tlv {
+    uint16_t type == 141;
+    uint16_t length;
+    enum ofp_bsn_port_usage value;
+};
+
+enum ofp_bsn_tunnel_type(wire_type=uint64_t, bitmask=True) {
+    OFP_BSN_TUNNEL_L2GRE = 0x1,
+};
+
+struct of_bsn_tlv_tunnel_capability : of_bsn_tlv {
+    uint16_t type == 142;
+    uint16_t length;
+    enum ofp_bsn_tunnel_type value;
+};
+
+enum ofp_bsn_enhanced_hash_type(wire_type=uint64_t, bitmask=True) {
+    OFP_BSN_ENHANCED_HASH_L2 = 0x1,
+    OFP_BSN_ENHANCED_HASH_L3 = 0x2,
+    OFP_BSN_ENHANCED_HASH_L2GRE = 0x4,
+    OFP_BSN_ENHANCED_HASH_MPLS = 0x8,
+    OFP_BSN_ENHANCED_HASH_GTP = 0x10,
+    OFP_BSN_ENHANCED_HASH_SYMMETRIC = 0x20,
+};
+
+struct of_bsn_tlv_enhanced_hash_capability : of_bsn_tlv {
+    uint16_t type == 143;
+    uint16_t length;
+    enum ofp_bsn_enhanced_hash_type value;
+};
+
+enum ofp_bsn_auto_negotiation_type(wire_type=uint8_t) {
+    OFP_BSN_AUTO_NEGOTIATION_DEFAULT = 0,
+    OFP_BSN_AUTO_NEGOTIATION_ENABLE = 1,
+    OFP_BSN_AUTO_NEGOTIATION_DISABLE = 2,
+};
+
+struct of_bsn_tlv_auto_negotiation : of_bsn_tlv {
+    uint16_t type == 144;
+    uint16_t length;
+    enum ofp_bsn_auto_negotiation_type value;
+};
+
+enum ofp_bsn_hash_algorithm_type(wire_type=uint16_t) {
+    OFP_BSN_HASH_ALGORITHM_CRC16XOR8 = 0,
+    OFP_BSN_HASH_ALGORITHM_CRC16XOR4 = 1,
+    OFP_BSN_HASH_ALGORITHM_CRC16XOR2 = 2,
+    OFP_BSN_HASH_ALGORITHM_CRC16XOR1 = 3,
+    OFP_BSN_HASH_ALGORITHM_CRC16 = 4,
+    OFP_BSN_HASH_ALGORITHM_XOR16 = 5,
+    OFP_BSN_HASH_ALGORITHM_CRC16CCITT = 6,
+    OFP_BSN_HASH_ALGORITHM_CRC32LO = 7,
+    OFP_BSN_HASH_ALGORITHM_CRC32HI = 8,
+};
+
+struct of_bsn_tlv_hash_algorithm : of_bsn_tlv {
+    uint16_t type == 145;
+    uint16_t length;
+    enum ofp_bsn_hash_algorithm_type value;
+};
+
+enum ofp_bsn_loopback_mode(wire_type=uint8_t) {
+    OFP_BSN_LOOPBACK_MODE_NONE = 0,
+    OFP_BSN_LOOPBACK_MODE_MAC = 1,
+    OFP_BSN_LOOPBACK_MODE_PHY = 2,
+    OFP_BSN_LOOPBACK_MODE_PHY_REMOTE = 3,
+};
+
+struct of_bsn_tlv_loopback_mode : of_bsn_tlv {
+    uint16_t type == 146;
+    uint16_t length;
+    enum ofp_bsn_loopback_mode value;
+};
+
+struct of_bsn_tlv_no_arp_response : of_bsn_tlv {
+    uint16_t type == 147;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_no_ns_response : of_bsn_tlv {
+    uint16_t type == 148;
+    uint16_t length;
+};
+
+enum ofp_bsn_forward_error_correction_type(wire_type=uint8_t) {
+    OFP_BSN_FORWARD_ERROR_CORRECTION_DEFAULT = 0,
+    OFP_BSN_FORWARD_ERROR_CORRECTION_ENABLE = 1,
+    OFP_BSN_FORWARD_ERROR_CORRECTION_DISABLE = 2,
+};
+
+struct of_bsn_tlv_forward_error_correction : of_bsn_tlv {
+    uint16_t type == 149;
+    uint16_t length;
+    enum ofp_bsn_forward_error_correction_type value;
+};
+
+struct of_bsn_tlv_optics_always_enabled : of_bsn_tlv {
+    uint16_t type == 150;
+    uint16_t length;
+};
+
+struct of_bsn_tlv_force_link_up : of_bsn_tlv {
+    uint16_t type == 151;
+    uint16_t length;
 };

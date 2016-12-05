@@ -88,7 +88,7 @@ class VersionOp:
 class JType(object):
     """ Wrapper class to hold C to Java type conversion information. JTypes can have a 'public'
         and or 'private' java type associated with them and can define how those types can be
-        read from and written to ChannelBuffers.
+        read from and written to ByteBufs.
 
     """
     def __init__(self, pub_type, priv_type=None):
@@ -163,7 +163,7 @@ class JType(object):
             return reduce(lambda a,repl: a.replace("$%s" % repl[0], str(repl[1])),  arguments.items(), _op)
 
     def read_op(self, version=None, length=None, pub_type=True):
-        """ return a Java stanza that reads a value of this JType from ChannelBuffer bb.
+        """ return a Java stanza that reads a value of this JType from ByteBuf bb.
         @param version int - OF wire version to generate expression for
         @param pub_type boolean use this JTypes 'public' (True), or private (False) representation
         @param length string, for operations that need it (e.g., read a list of unknown length)
@@ -184,7 +184,7 @@ class JType(object):
 
     def write_op(self, version=None, name=None, pub_type=True):
         """ return a Java stanza that writes a value of this JType contained in Java expression
-        'name' to ChannelBuffer bb.
+        'name' to ByteBuf bb.
         @param name string containing Java expression that evaluations to the value to be written
         @param version int - OF wire version to generate expression for
         @param pub_type boolean use this JTypes 'public' (True), or private (False) representation
@@ -208,7 +208,7 @@ class JType(object):
         )
 
     def skip_op(self, version=None, length=None):
-        """ return a java stanza that skips an instance of JType in the input ChannelBuffer 'bb'.
+        """ return a java stanza that skips an instance of JType in the input ByteBuf 'bb'.
             This is used in the Reader implementations for virtual classes (because after the
             discriminator field, the concrete Reader instance will re-read all the fields)
             Currently just delegates to read_op + throws away the result."""
@@ -259,7 +259,7 @@ def gen_enum_jtype(java_name, is_bitmask=False):
 
 def gen_list_jtype(java_base_name):
     # read op assumes the class has a public final static field READER that implements
-    # OFMessageReader<$class> i.e., can deserialize an instance of class from a ChannelBuffer
+    # OFMessageReader<$class> i.e., can deserialize an instance of class from a ByteBuf
     # write op assumes class implements Writeable
     return JType("List<{}>".format(java_base_name)) \
         .op(
@@ -349,6 +349,11 @@ of_match = JType('Match') \
         .op(read='ChannelUtilsVer$version.readOFMatch(bb)', \
             write='$name.writeTo(bb)',
             default="OFFactoryVer$version.MATCH_WILDCARD_ALL");
+of_stat = JType('Stat') \
+         .op(read='ChannelUtilsVer$version.readOFStat(bb)', write='$name.writeTo(bb)')
+of_time = JType('OFTime') \
+         .op(read='OFTimeVer$version.READER.readFrom(bb)', \
+             write='$name.writeTo(bb)')
 group_mod_cmd = JType('OFGroupModCommand', 'short') \
         .op(version=ANY, read="bb.readShort()", write="bb.writeShort($name)")
 flow_mod_cmd = JType('OFFlowModCommand', 'short') \
@@ -358,6 +363,15 @@ mac_addr = JType('MacAddress') \
         .op(read="MacAddress.read6Bytes(bb)", \
             write="$name.write6Bytes(bb)",
             default="MacAddress.NONE")
+vxlan_ni = JType('VxlanNI') \
+        .op(read="VxlanNI.read4Bytes(bb)", \
+            write="$name.write4Bytes(bb)",
+            default="VxlanNI.ZERO")
+
+vfi = JType('VFI') \
+        .op(read="VFI.read2Bytes(bb)", \
+            write="$name.write2Bytes(bb)",
+            default="VFI.ZERO")
 
 port_name = gen_fixed_length_string_jtype(16)
 app_code = gen_fixed_length_string_jtype(15)
@@ -432,6 +446,9 @@ ipv6_flabel = JType("IPv6FlowLabel")\
         .op(read="IPv6FlowLabel.read4Bytes(bb)",
             write="$name.write4Bytes(bb)",
             default="IPv6FlowLabel.NONE")
+packet_type = JType("PacketType") \
+        .op(read="PacketType.read4Bytes(bb)",
+            write="$name.write4Bytes(bb)")
 metadata = JType("OFMetadata")\
         .op(read="OFMetadata.read8Bytes(bb)",
             write="$name.write8Bytes(bb)",
@@ -444,6 +461,17 @@ oxm_list = JType("OFOxmList") \
             read= 'OFOxmList.readFrom(bb, $length, OFOxmVer$version.READER)', \
             write='$name.writeTo(bb)',
             default="OFOxmList.EMPTY")
+connection_uri = JType("OFConnectionIndex") \
+        .op(read="OFConnectionIndex.read4Bytes(bb)",
+            write="$name.write4Bytes(bb)")
+#Fixed Ver15 (FIXME for 1.5 + versions)
+oxs = JType("OFOxs<?>")\
+        .op(read="OFOxsVer15.READER.readFrom(bb)",
+            write="$name.writeTo(bb)")
+oxs_list = JType("OFOxsList") \
+        .op(read= 'OFOxsList.readFrom(bb, $length, OFOxsVer15.READER)', \
+            write='$name.writeTo(bb)',
+            default="OFOxsList.EMPTY")
 meter_features = JType("OFMeterFeatures")\
         .op(read="OFMeterFeaturesVer$version.READER.readFrom(bb)",
             write="$name.writeTo(bb)")
@@ -485,6 +513,7 @@ of_version = JType("OFVersion", 'byte') \
             .op(read='bb.readByte()', write='bb.writeByte($name)')
 
 port_speed = JType("PortSpeed")
+
 error_type = JType("OFErrorType")
 of_message = JType("OFMessage")\
             .op(read="OFMessageVer$version.READER.readFrom(bb)",
@@ -564,6 +593,9 @@ table_desc = JType('OFTableDesc') \
         .op(read='OFTableDescVer$version.READER.readFrom(bb)', \
             write='$name.writeTo(bb)')
 
+controller_status_entry = JType('OFControllerStatusEntry') \
+        .op(read='OFControllerStatusEntryVer$version.READER.readFrom(bb)', \
+            write='$name.writeTo(bb)')
 
 default_mtype_to_jtype_convert_map = {
         'uint8_t' : u8,
@@ -581,10 +613,13 @@ default_mtype_to_jtype_convert_map = {
         'list(of_uint16_t)' : u16_list,
         'list(of_uint8_t)' : u8_list,
         'list(of_oxm_t)' : oxm_list,
+        'list(of_oxs_t)' : oxs_list,
         'list(of_ipv4_t)' : ipv4_list,
         'list(of_ipv6_t)' : ipv6_list,
         'of_octets_t' : octets,
         'of_match_t': of_match,
+        'of_stat_t' : of_stat,
+        'of_controller_uri_t' : connection_uri,
         'of_fm_cmd_t': flow_mod_cmd,
         'of_mac_addr_t': mac_addr,
         'of_port_desc_t': port_desc,
@@ -600,6 +635,7 @@ default_mtype_to_jtype_convert_map = {
         'of_ipv6_t': ipv6,
         'of_wc_bmap_t': flow_wildcards,
         'of_oxm_t': oxm,
+        'of_oxs_t': oxs,
         'of_meter_features_t': meter_features,
         'of_bitmap_128_t': port_bitmap_128,
         'of_bitmap_256_t': port_bitmap_256,
@@ -611,6 +647,9 @@ default_mtype_to_jtype_convert_map = {
         'of_table_desc_t': table_desc,
         'of_odu_sig_id_t': odu_sig_id,
         'of_och_sig_id_t' : sig_id,
+        'of_controller_status_entry_t' : controller_status_entry,
+        'of_time_t' : of_time,
+        'of_header_t' : of_message,
         }
 
 ## Map that defines exceptions from the standard loxi->java mapping scheme
@@ -679,6 +718,21 @@ exceptions = {
         'of_oxm_conntrack_label' : { 'value' : port_bitmap_128 },
         'of_oxm_conntrack_label_masked' : { 'value' : port_bitmap_128, 'value_mask' : port_bitmap_128 },
 
+        'of_oxm_tcp_flags' : { 'value' : u16obj },
+        'of_oxm_tcp_flags_masked' : { 'value' : u16obj, 'value_mask' : u16obj },
+        'of_oxm_ovs_tcp_flags' : { 'value' : u16obj },
+        'of_oxm_ovs_tcp_flags_masked' : { 'value' : u16obj, 'value_mask' : u16obj },
+        'of_oxm_actset_output' : { 'value' : of_port },
+        'of_oxm_actset_output_masked' : { 'value' : of_port, 'value_mask' : of_port },
+        'of_oxm_packet_type' : { 'value' : packet_type },
+        'of_oxm_packet_type_masked' : { 'value' : packet_type, 'value_mask' : packet_type },
+
+        'of_oxs_byte_count' : { 'value' : u64 },
+        'of_oxs_duration' : { 'value' : u64 },
+        'of_oxs_flow_count' : { 'value' : u32obj },
+        'of_oxs_idle_time' : { 'value' : u64 },
+        'of_oxs_packet_count' : { 'value' : u64 },
+
         'of_oxm_bsn_in_ports_128' : { 'value': port_bitmap_128 },
         'of_oxm_bsn_in_ports_128_masked' : { 'value': port_bitmap_128, 'value_mask': port_bitmap_128 },
 
@@ -745,8 +799,8 @@ exceptions = {
         'of_oxm_bsn_l2_cache_hit' : { 'value' : boolean_value },
         'of_oxm_bsn_l2_cache_hit_masked' : { 'value' : boolean_value, 'value_mask' : boolean_value },
 
-        'of_oxm_bsn_vxlan_network_id' : { 'value' : u32obj },
-        'of_oxm_bsn_vxlan_network_id_masked' : { 'value' : u32obj, 'value_mask' : u32obj },
+        'of_oxm_bsn_vxlan_network_id' : { 'value' : vxlan_ni },
+        'of_oxm_bsn_vxlan_network_id_masked' : { 'value' : vxlan_ni, 'value_mask' : vxlan_ni},
 
         'of_oxm_bsn_inner_eth_dst' : { 'value' : mac_addr },
         'of_oxm_bsn_inner_eth_dst_masked' : { 'value' : mac_addr, 'value_mask' : mac_addr },
@@ -756,6 +810,12 @@ exceptions = {
 
         'of_oxm_bsn_inner_vlan_vid' : { 'value' : vlan_vid_match },
         'of_oxm_bsn_inner_vlan_vid_masked' : { 'value' : vlan_vid_match, 'value_mask' : vlan_vid_match },
+
+        'of_oxm_bsn_vfi' : { 'value' : vfi },
+        'of_oxm_bsn_vfi_masked' : { 'value' : vfi, 'value_mask' : vfi },
+
+        'of_oxm_bsn_ip_fragmentation' : { 'value' : boolean_value },
+        'of_oxm_bsn_ip_fragmentation_masked' : { 'value' : boolean_value, 'value_mask' : boolean_value },
 
         'of_table_stats_entry': { 'wildcards': table_stats_wildcards },
         'of_match_v1': { 'vlan_vid' : vlan_vid_match, 'vlan_pcp': vlan_pcp,
@@ -787,6 +847,8 @@ exceptions = {
         'of_group_add' : { 'command' : group_mod_cmd },
         'of_group_modify' : { 'command' : group_mod_cmd },
         'of_group_delete' : { 'command' : group_mod_cmd },
+        'of_group_insert_bucket': {'command' : group_mod_cmd },
+        'of_group_remove_bucket' : {'command' : group_mod_cmd },
 
         'of_bucket' : { 'watch_group': of_group },
 
@@ -881,7 +943,7 @@ exceptions = {
         'of_oxm_tun_gpe_flags' : { 'value' : u8obj },
         'of_oxm_tun_gpe_flags_masked' : { 'value' : u8obj, 'value_mask' : u8obj },
 
-        'of_oxm_ofdpa_mpls_type': { 'value': u16obj },
+        'of_oxm_ofdpa_mpls_type' : { 'value': u16obj },
 
         'of_oxm_ofdpa_qos_index': { 'value': u8obj },
 
@@ -889,6 +951,8 @@ exceptions = {
         'of_oxm_ofdpa_mpls_l2_port_masked': { 'value': u32obj, 'value_mask': u32obj },
 
         'of_oxm_ofdpa_ovid': { 'value': u16obj },
+
+        'of_flow_lightweight_stats_request' : { 'out_group' : of_group }
 }
 
 
@@ -903,8 +967,14 @@ def enum_java_types():
 def make_match_field_jtype(sub_type_name="?"):
     return JType("MatchField<{}>".format(sub_type_name))
 
+def make_stat_field_jtype(sub_type_name="?"):
+    return JType("StatField<{}>".format(sub_type_name))
+
 def make_oxm_jtype(sub_type_name="?"):
     return JType("OFOxm<{}>".format(sub_type_name))
+
+def make_oxs_jtype(sub_type_name="?"):
+    return JType("OFOxs<{}>".format(sub_type_name))
 
 def list_cname_to_java_name(c_type):
     m = re.match(r'list\(of_([a-zA-Z_]+)_t\)', c_type)

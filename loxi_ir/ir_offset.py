@@ -26,7 +26,8 @@ ofp_constants = dict(
     OF_ETH_ALEN = 6,
     OF_DESC_STR_LEN   = 256,
     OF_SERIAL_NUM_LEN = 32,
-    OF_APP_CODE_LEN = 15 	
+    OF_APP_CODE_LEN = 15, 	
+    OF_CONTROLLER_URI_LEN = 32
 )
 
 
@@ -37,6 +38,7 @@ of_mixed_types = dict(
         3: "uint32_t",
         4: "uint32_t",
         5: "uint32_t",
+        6: "uint32_t",
         "short_name":"port_no"
         },
     of_port_desc_t = {
@@ -45,6 +47,7 @@ of_mixed_types = dict(
         3: "of_port_desc_t",
         4: "of_port_desc_t",
         5: "of_port_desc_t",
+        6: "of_port_desc_t",
         "short_name":"port_desc"
         },
     of_bsn_vport_t = {
@@ -53,6 +56,7 @@ of_mixed_types = dict(
         3: "of_bsn_vport_t",
         4: "of_bsn_vport_t",
         5: "of_bsn_vport_t",
+        6: "of_bsn_vport_t",
         "short_name":"bsn_vport"
         },
     of_fm_cmd_t = { # Flow mod command went from u16 to u8
@@ -61,6 +65,7 @@ of_mixed_types = dict(
         3: "uint8_t",
         4: "uint8_t",
         5: "uint8_t",
+        6: "uint8_t",
         "short_name":"fm_cmd"
         },
     of_wc_bmap_t = { # Wildcard bitmap
@@ -69,6 +74,7 @@ of_mixed_types = dict(
         3: "uint64_t",
         4: "uint64_t",
         5: "uint64_t",
+        6: "uint64_t",
         "short_name":"wc_bmap"
         },
     of_match_bmap_t = { # Match bitmap
@@ -77,6 +83,7 @@ of_mixed_types = dict(
         3: "uint64_t",
         4: "uint64_t",
         5: "uint64_t",
+        6: "uint64_t",
         "short_name":"match_bmap"
         },
     of_match_t = { # Match object
@@ -85,8 +92,17 @@ of_mixed_types = dict(
         3: "of_match_v3_t",
         4: "of_match_v3_t",  # Currently uses same match as 1.2 (v3).
         5: "of_match_v3_t",  # Currently uses same match as 1.2 (v3).
+        6: "of_match_v3_t",
         "short_name":"match"
         },
+    of_stat_t = { #Statistics object
+        6: "of_stat_v6_t",
+        "short_name":"stat"
+        },
+    of_time_t = { # time object
+        6: "of_time_t",
+        "short_name":"time"
+        }
 )
 
 ## basic lengths
@@ -103,12 +119,14 @@ of_base_lengths = dict(
     of_table_name_t = (ofp_constants["OF_MAX_TABLE_NAME_LEN"], True),
     of_desc_str_t = (ofp_constants["OF_DESC_STR_LEN"], True),
     of_serial_num_t = (ofp_constants["OF_SERIAL_NUM_LEN"], True),
+    of_controller_uri_t = (ofp_constants["OF_CONTROLLER_URI_LEN"], True),
     of_str64_t = (64, True),
     of_str32_t = (32, True),
     of_str6_t = (6, True),
     of_match_v1_t = (40, True),
     of_match_v2_t = (88, True),
     of_match_v3_t = (8, False),
+    of_stat_v6_t = (8, False),
     of_octets_t = (0, False),
     of_bitmap_128_t = (16, True),
     of_checksum_128_t = (16, True),
@@ -118,6 +136,7 @@ of_base_lengths = dict(
     of_bitmap_512_t = (64, True),
     of_odu_sig_id_t = (16, True),
     of_och_sig_id_t = (6, True),
+    of_time_t = (16, True)
 )
 
 def type_dec_to_count_base(m_type):

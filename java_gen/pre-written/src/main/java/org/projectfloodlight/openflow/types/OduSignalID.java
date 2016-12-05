@@ -18,7 +18,7 @@ package org.projectfloodlight.openflow.types;
 
 import java.util.List;
 
-import org.jboss.netty.buffer.ChannelBuffer;
+import io.netty.buffer.ByteBuf;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.primitives.UnsignedBytes;
@@ -75,14 +75,14 @@ public class OduSignalID implements OFValueType<OduSignalID> {
       return MINIMUM_LENGTH + 12; //  tslen == 80 
     }
  
-    public void writeTo(ChannelBuffer c) {
+    public void writeTo(ByteBuf c) {
         c.writeShort(tpn);
         c.writeShort(tslen);
         c.writeBytes(tsmap); // 10 bytes
         c.writeZero(2); // write bytes for add padding alignment (the size of bytes in tsmap must be divided in 4)   
     }
 
-     public static OduSignalID readFrom(ChannelBuffer c)   {
+     public static OduSignalID readFrom(ByteBuf c)   {
         int tpn = U16.f(c.readShort());
         int tslen = U16.f(c.readShort());
         byte[] tsmap = null;

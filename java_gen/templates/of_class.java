@@ -197,7 +197,7 @@ class ${impl_class} implements ${msg.interface.inherited_declaration()} {
     final static Reader READER = new Reader();
     static class Reader implements OFMessageReader<${msg.interface.name}> {
         @Override
-        public ${msg.interface.name} readFrom(ChannelBuffer bb) throws OFParseError {
+        public ${msg.interface.name} readFrom(ByteBuf bb) throws OFParseError {
 //:: for prop in msg.members:
 //:: if not prop.is_virtual and (prop.is_length_value or prop.is_field_length_value):
             int start = bb.readerIndex();
@@ -304,18 +304,19 @@ class ${impl_class} implements ${msg.interface.inherited_declaration()} {
     }
 
 
-    public void writeTo(ChannelBuffer bb) {
+    public void writeTo(ByteBuf bb) {
         WRITER.write(bb, this);
     }
 
     final static Writer WRITER = new Writer();
     static class Writer implements OFMessageWriter<${impl_class}> {
         @Override
-        public void write(ChannelBuffer bb, ${impl_class} message) {
+        public void write(ByteBuf bb, ${impl_class} message) {
 //:: if not msg.is_fixed_length:
             int startIndex = bb.writerIndex();
 //:: #endif
 //:: fields_with_length_member = {}
+//:: has_length_value = False
 //:: for prop in msg.members:
 //:: if prop.c_name in fields_with_length_member:
             int ${prop.name}StartIndex = bb.writerIndex();
@@ -331,6 +332,7 @@ class ${impl_class} implements ${msg.interface.inherited_declaration()} {
             // fixed value property ${prop.name} = ${prop.value}
             ${prop.java_type.write_op(version, prop.priv_value, pub_type=False)};
 //:: elif prop.is_length_value:
+//::     has_length_value = True
             // ${prop.name} is length of variable message, will be updated at the end
 //:: if not msg.is_fixed_length:
             int lengthIndex = bb.writerIndex();
@@ -354,7 +356,7 @@ class ${impl_class} implements ${msg.interface.inherited_declaration()} {
 //:: #endif
 //:: #endfor
 
-//:: if not msg.is_fixed_length:
+//:: if not msg.is_fixed_length and has_length_value:
             // update length field
             int length = bb.writerIndex() - startIndex;
             //:: if msg.align:
@@ -417,6 +419,40 @@ class ${impl_class} implements ${msg.interface.inherited_declaration()} {
         return true;
     }
 
+    //:: if filter(lambda m: m.name == 'xid', msg.data_members):
+    @Override
+    public boolean equalsIgnoreXid(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        //:: if len(msg.data_members) > 0:
+        ${msg.name} other = (${msg.name}) obj;
+        //:: #endif
+
+        //:: for prop in msg.data_members:
+        //:: if prop.java_type.is_primitive and prop.name == 'xid':
+        // ignore XID
+        //:: elif prop.java_type.is_primitive:
+        if( ${prop.name} != other.${prop.name})
+            return false;
+        //:: elif prop.java_type.is_array:
+        if (!Arrays.equals(${prop.name}, other.${prop.name}))
+                return false;
+        //:: else:
+        if (${prop.name} == null) {
+            if (other.${prop.name} != null)
+                return false;
+        } else if (!${prop.name}.equals(other.${prop.name}))
+            return false;
+        //:: #endif
+        //:: #endfor
+        return true;
+    }
+
+    //:: #endif
     @Override
     public int hashCode() {
         //:: if len(msg.data_members) > 0:
@@ -440,4 +476,31 @@ class ${impl_class} implements ${msg.interface.inherited_declaration()} {
         return result;
     }
 
+    //:: if filter(lambda m: m.name == 'xid', msg.data_members):
+    @Override
+    public int hashCodeIgnoreXid() {
+        //:: if len(msg.data_members) > 0:
+        final int prime = 31;
+        //:: #endif
+        int result = 1;
+
+        //:: for prop in msg.data_members:
+        //:: if prop.java_type.is_primitive and prop.name == 'xid':
+        // ignore XID
+        //:: elif prop.java_type.pub_type == 'long':
+        result = prime *  (int) (${prop.name} ^ (${prop.name} >>> 32));
+        //:: elif prop.java_type.pub_type == 'boolean':
+        result = prime * result + (${prop.name} ? 1231 : 1237);
+        //:: elif prop.java_type.is_primitive:
+        result = prime * result + ${prop.name};
+        //:: elif prop.java_type.is_array:
+        result = prime * result + Arrays.hashCode(${prop.name});
+        //:: else:
+        result = prime * result + ((${prop.name} == null) ? 0 : ${prop.name}.hashCode());
+        //:: #endif
+        //:: #endfor
+        return result;
+    }
+
+    //:: #endif
 }

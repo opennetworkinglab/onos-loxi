@@ -17,7 +17,7 @@
 
 package org.projectfloodlight.openflow.types;
 
-import org.jboss.netty.buffer.ChannelBuffer;
+import io.netty.buffer.ByteBuf;
 
 import com.google.common.hash.PrimitiveSink;
 
@@ -110,14 +110,14 @@ public class OFBitMask256 implements OFValueType<OFBitMask256> {
         return (word & ((long)1 << bit)) != 0;
     }
 
-    public void write32Bytes(ChannelBuffer cb) {
+    public void write32Bytes(ByteBuf cb) {
         cb.writeLong(raw1);
         cb.writeLong(raw2);
         cb.writeLong(raw3);
         cb.writeLong(raw4);
     }
 
-    public static OFBitMask256 read32Bytes(ChannelBuffer cb) {
+    public static OFBitMask256 read32Bytes(ByteBuf cb) {
         long raw1 = cb.readLong();
         long raw2 = cb.readLong();
         long raw3 = cb.readLong();

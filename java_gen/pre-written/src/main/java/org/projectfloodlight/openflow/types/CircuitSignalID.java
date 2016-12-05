@@ -1,7 +1,7 @@
 package org.projectfloodlight.openflow.types;
 
 import com.google.common.collect.ComparisonChain;
-import org.jboss.netty.buffer.ChannelBuffer;
+import io.netty.buffer.ByteBuf;
 import org.projectfloodlight.openflow.exceptions.OFParseError;
 
 import com.google.common.hash.PrimitiveSink;
@@ -53,14 +53,14 @@ public class CircuitSignalID implements OFValueType<CircuitSignalID> {
         return spectralWidth;
     }
 
-    public void write6Bytes(ChannelBuffer c) {
+    public void write6Bytes(ByteBuf c) {
         c.writeByte(gridType);
         c.writeByte(channelSpacing);
         c.writeShort(channelNumber);
         c.writeShort(spectralWidth);
     }
 
-    public static CircuitSignalID read6Bytes(ChannelBuffer c) throws OFParseError {
+    public static CircuitSignalID read6Bytes(ByteBuf c) throws OFParseError {
         return new CircuitSignalID((byte)c.readUnsignedByte(),
                                    (byte)c.readUnsignedByte(),
                                    (short)c.readUnsignedShort(),

@@ -8,13 +8,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import io.netty.buffer.Unpooled;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
-import org.jboss.netty.buffer.ChannelBuffers;
 import org.junit.Test;
 import org.projectfloodlight.openflow.exceptions.OFParseError;
 
@@ -228,6 +231,84 @@ public class IPv4AddressTest {
     }
 
     @Test
+    public void testOf4Integers() {
+        Map<IPv4Address, IPv4Address> map = new HashMap<>();
+        map.put(IPv4Address.of(0, 0, 0, 0), IPv4Address.of(0));
+        map.put(IPv4Address.of(1, 2, 3, 4), IPv4Address.of("1.2.3.4"));
+        map.put(IPv4Address.of(6, 7, 8, 9), IPv4Address.of("6.7.8.9"));
+        map.put(IPv4Address.of(10, 1, 2, 3), IPv4Address.of("10.1.2.3"));
+        map.put(IPv4Address.of(10, 201, 202, 203), IPv4Address.of("10.201.202.203"));
+        map.put(IPv4Address.of(192, 168, 0, 101), IPv4Address.of("192.168.0.101"));
+        map.put(IPv4Address.of(211, 212, 213, 214), IPv4Address.of("211.212.213.214"));
+        map.put(IPv4Address.of(255, 255, 255, 255), IPv4Address.of(0xFF_FF_FF_FF));
+        for (Entry<IPv4Address, IPv4Address> entry : map.entrySet()) {
+            assertThat(entry.getKey(), equalTo(entry.getValue()));
+        }
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative1() {
+        IPv4Address.of(-3, 4, 5, 6);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative2() {
+        IPv4Address.of(3, -4, 5, 6);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative3() {
+        IPv4Address.of(3, 4, -5, 6);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative4() {
+        IPv4Address.of(3, 4, 5, -6);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative5() {
+        // ((byte) 128) is actually -128
+        IPv4Address.of(101, 102, 103, (byte) 128);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative6() {
+        // ((byte) 255) is actually -1
+        IPv4Address.of(101, 102, 103, (byte) 255);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionNegative7() {
+        IPv4Address.of(-1, -1, -1, -1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionTooBig1() {
+        IPv4Address.of(1000, 2, 3, 4);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionTooBig2() {
+        IPv4Address.of(1, 20000, 3, 4);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionTooBig3() {
+        IPv4Address.of(1, 2, 300000, 4);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionTooBig4() {
+        IPv4Address.of(1, 2, 3, 4000000);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testOf4IntegersExceptionTooBig5() {
+        IPv4Address.of(256, 256, 256, 256);
+    }
+
+    @Test
     public void testOfCidrMaskLength() {
         for (int i = 0; i <= 32; i++) {
             assertEquals(IPv4Address.ofCidrMaskLength(i).asCidrMaskLength(), i);
@@ -307,7 +388,7 @@ public class IPv4AddressTest {
     @Test
     public void testReadFrom() throws OFParseError {
         for(int i=0; i < testAddresses.length; i++ ) {
-            IPv4Address ip = IPv4Address.read4Bytes(ChannelBuffers.copiedBuffer(testAddresses[i]));
+            IPv4Address ip = IPv4Address.read4Bytes(Unpooled.copiedBuffer(testAddresses[i]));
             assertEquals(testInts[i], ip.getInt());
             assertArrayEquals(testAddresses[i], ip.getBytes());
             assertEquals(testStrings[i], ip.toString());

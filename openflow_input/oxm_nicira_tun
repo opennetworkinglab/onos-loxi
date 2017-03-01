@@ -54,6 +54,12 @@ struct of_oxm_tunnel_ipv4_dst_masked : of_oxm {
     of_ipv4_t value_mask;
 };
 
+// Nicira extension for tun_ipv6_dst
+struct of_oxm_tunnel_ipv6_dst : of_oxm {
+    uint32_t type_len == 0x0001dc10;
+    of_ipv6_t value;
+};
+
 // Nicira extension for tun_flags (104)
 struct of_oxm_tun_flags : of_oxm {
     uint32_t type_len == 0x0001d002;

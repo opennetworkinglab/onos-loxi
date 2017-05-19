@@ -1,3 +1,5 @@
+/* This file input supports FlowForwarding LINC-OE optical switch. */
+
 #version 4
 
 /* WDM grid types */
@@ -57,22 +59,12 @@ struct ofp_och_signal_id {
 };
 
 struct of_oxm_och_sigtype : of_oxm {
-    uint32_t type_len == 0x00085801; 	
+    uint32_t type_len == 0x80005801;
     uint8_t value;
 };
 
 struct of_oxm_och_sigid : of_oxm {
-    uint32_t type_len == 0x00085A06; 
-    of_sig_id_t value;
-};
-
-struct of_oxm_och_sigtype_basic : of_oxm {
-    uint32_t type_len == 0x80005801; 	
-    uint8_t value;
-};
-
-struct of_oxm_och_sigid_basic : of_oxm {
-    uint32_t type_len == 0x80005A06; 
+    uint32_t type_len == 0x80005A06;
     of_sig_id_t value;
 };
 

@@ -243,6 +243,18 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>3.0.1</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <niceManifest>true</niceManifest>
+                    <instructions>
+                      <!-- Compile-time dependency can be optional-->
+                      <!-- Any Guava version 19.0 or later-->
+                      <Import-Package>
+                          javax.annotation;resolution:=optional,
+                          com.google.*;version=19.0,
+                          *
+                      </Import-Package>
+                    </instructions>
+                </configuration>
             </plugin>
         </plugins>
         <resources>

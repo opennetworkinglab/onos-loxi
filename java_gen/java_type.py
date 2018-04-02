@@ -642,7 +642,7 @@ default_mtype_to_jtype_convert_map = {
         'of_bitmap_512_t': port_bitmap_512,
         'of_checksum_128_t': u128,
         'of_bsn_vport_t': bsn_vport,
-        'of_app_code_t': app_code,  
+        'of_app_code_t': app_code,
         'of_sig_id_t': sig_id,
         'of_table_desc_t': table_desc,
         'of_odu_sig_id_t': odu_sig_id,
@@ -948,11 +948,16 @@ exceptions = {
         'of_oxm_ofdpa_qos_index': { 'value': u8obj },
 
         'of_oxm_ofdpa_mpls_l2_port': { 'value': u32obj },
+
         'of_oxm_ofdpa_mpls_l2_port_masked': { 'value': u32obj, 'value_mask': u32obj },
 
         'of_oxm_ofdpa_ovid': { 'value': u16obj },
 
-        'of_flow_lightweight_stats_request' : { 'out_group' : of_group }
+        'of_oxm_ofdpa_actset_output': { 'value': u32obj },
+
+        'of_oxm_ofdpa_allow_vlan_translation': { 'value': u8obj },
+
+        'of_flow_lightweight_stats_request' : { 'out_group' : of_group },
 }
 
 

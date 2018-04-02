@@ -40,3 +40,28 @@ struct of_action_ofdpa_pop_cw : of_action_ofdpa {
     uint16_t exp_type == 4;
     pad(6);
 };
+
+// Sets the allow vlan translation in l2 unfiltered group
+// Used in configuring groups that use the egress vlan tables
+struct of_action_ofdpa_set_vlan_translation : of_action_ofdpa {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x04EA;
+    uint16_t exp_type == 24;
+    pad(6);
+};
+
+// utilizes the copy_field action which is used in
+// the egress tpid table for change the tpid of outgoing packets
+struct of_action_onf_copy_field : of_action_onf {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x4f4e4600;
+    uint16_t exp_type == 3200;
+    uint16_t n_bits;
+    uint16_t src_offset;
+    uint16_t dst_offset;
+    uint32_t src;
+    uint32_t dst;
+};
+

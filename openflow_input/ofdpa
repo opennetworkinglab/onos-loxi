@@ -12,3 +12,11 @@ struct of_action_ofdpa : of_action_experimenter {
     pad(6);
 };
 
+struct of_action_onf : of_action_experimenter {
+    uint16_t type == 65535;
+    uint16_t len;
+    uint32_t experimenter == 0x4f4e4600;
+    uint16_t exp_type == ?;
+    pad(6);
+};
+

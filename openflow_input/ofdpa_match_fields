@@ -38,3 +38,17 @@ struct of_oxm_ofdpa_ovid : of_oxm {
     uint16_t value;
 };
 
+// This struct defines the ACTSET_OUTPUT
+struct of_oxm_ofdpa_actset_output : of_oxm {
+    uint32_t type_len == 0xFFFF5608;
+    uint32_t experimenter_id == 0x4F4E4600;
+    uint32_t value;
+};
+
+// This struct defines the ALLOW_VLAN_TRANSLATION
+struct of_oxm_ofdpa_allow_vlan_translation : of_oxm {
+    uint32_t type_len == 0xFFFF3005;
+    uint32_t experimenter_id == 0x1018;
+    uint8_t value;
+};
+

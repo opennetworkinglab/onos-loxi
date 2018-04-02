@@ -437,6 +437,12 @@ public class MatchField<F extends OFValueType<F>> {
             new MatchField<U16>("ofdpa_ovid", MatchFields.OFDPA_OVID,
                 new Prerequisite<OFVlanVidMatch>(MatchField.VLAN_VID));
 
+    public final static MatchField<U32> OFDPA_ACTSET_OUTPUT =
+            new MatchField<U32>("ofdpa_actset_output", MatchFields.OFDPA_ACTSET_OUTPUT);
+
+    public final static MatchField<U8> OFDPA_ALLOW_VLAN_TRANSLATION =
+            new MatchField<U8>("ofdpa_allow_vlan_translation", MatchFields.OFDPA_ALLOW_VLAN_TRANSLATION);
+
     public final static MatchField<VFI> BSN_VFI =
             new MatchField<VFI>("bsn_vfi", MatchFields.BSN_VFI);
 
